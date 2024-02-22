@@ -1,14 +1,21 @@
 //https://blog.logrocket.com/getting-started-d3-js-react/
 
 import React, { useState, useEffect, useCallback, Component } from "react"
+import * as tf from '@tensorflow/tfjs';
 import * as d3 from "d3"
+
+import {loadModel} from "../methods/load_model_data.js"
 
 function Chart(props) {
 
     const ref = React.useRef(null) // Use React ref to control DOM elements for D3
+    const [layers, setLayers] = useState([]);
 
     useEffect(() => {
-        (async () => {
+    (async () => {
+
+        loadModel();
+        
         const data = [ 12, 5, 6, 6, 9, 10 ];
         const svgContainer = d3.select(ref.current);
         svgContainer.selectAll("*").remove(); // remove former charts to avoid drawing twice or more
@@ -36,21 +43,8 @@ function Chart(props) {
                     })
                 .attr("fill", "#000");
         }
-        
-
-
-        // svg.selectAll("circle")
-        //     .data(data)
-        //     .enter()
-        //     .append("rect")
-        //     .attr("x", (d, i) => i * 70)
-        //     .attr("y", (d, i) => 300 - 10 * d)
-        //     .attr("width", 65)
-        //     .attr("height", (d, i) => d * 10)
-        //     .attr("fill", "green");
-        
         })();
-    }, [props.scaleSend, props.selectCases, props.selectPolicy, props.selectVote, props.selectGunRate,props.selectCity,props.selectUni,props.searchData,props.selectSerious,props.selectLowerRange]
+    }, []
     )
     
     return (
