@@ -4,6 +4,7 @@
 import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import './chart.css';
 
 import Chart from './chart/chart.js'
 import data from "./data.json";

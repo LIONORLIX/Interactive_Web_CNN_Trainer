@@ -7,37 +7,47 @@
 import * as tf from '@tensorflow/tfjs';
 
 export async function loadModel(){
-    try {
+    // try {
         const model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
 
-        let layerJSON = {};
+        let layerJSON = [];
+        let neuronJSON = [];
         let layerConv2DIndex = 0;
 
         model.layers.forEach((layer, index) => {
             const layerType = layer.getClassName();
             let neuronCount = -1;
 
-            // create new layer attribute
-            if (!layerJSON[layer.name]){
-                layerJSON[layer.name] = {};
-            }
-
             if (layerType === 'Conv2D') {
                 neuronCount = layer.filters;
+                for (let i=0; i<neuronCount; i++){
+                    neuronJSON.push({
+                        'layerName': layer.name,
+                        'layerIndex': index,
+                        'neuronIndex': i,
+                        'layerType': layerType,
+                        'layerConv2DIndex': layerConv2DIndex
+                    })
+                }
                 layerConv2DIndex += 1;
             }
-            layerJSON[layer.name].layerIndex = index;
-            layerJSON[layer.name].layerType = layerType;
-            layerJSON[layer.name].neuronCount = neuronCount;
-            layerJSON[layer.name].layerConv2DIndex = layerConv2DIndex;
+
+            layerJSON.push({
+                'layerName': layer.name,
+                'layerIndex': index,
+                'layerType': layerType,
+                'neuronCount': neuronCount,
+                'layerConv2DIndex': layerConv2DIndex
+            })
+
         });
 
         console.log('Model loaded successfully');
-        console.log(layerJSON)
-        return layerJSON;
+        // console.log(layerJSON)
+        return {layerJSON: layerJSON, neuronJSON: neuronJSON};
 
-    } catch (error) {
-        console.error('Failed to load the model', error);
-        return {}
-    }
+    // } catch (error) {
+    //     console.error('Failed to load the model', error);
+    //     return {}
+    // }
 };

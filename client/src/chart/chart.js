@@ -9,40 +9,51 @@ import {loadModel} from "../methods/load_model_data.js"
 function Chart(props) {
 
     const ref = React.useRef(null) // Use React ref to control DOM elements for D3
-    const [layers, setLayers] = useState([]);
+    // const [layers, setLayers] = useState([]);
+    const [layerData, setLayerData] = useState([]);
+    const [neuronData, setneuronData] = useState([]);
 
     useEffect(() => {
     (async () => {
 
-        loadModel();
-        
-        const data = [ 12, 5, 6, 6, 9, 10 ];
+        const Data = await loadModel();
+        const layerData = Data.layerJSON;
+        const neuronData = Data.neuronJSON;
+        setLayerData(layerData);
+        setneuronData(neuronData);
+        console.log(neuronData);
+
+        // data = data.layerConv2DIndex;
+        // console.log(layerData);
+
         const svgContainer = d3.select(ref.current);
         svgContainer.selectAll("*").remove(); // remove former charts to avoid drawing twice or more
         
         // create svg chart
         const svg = svgContainer
                     .append("svg")
-                    .attr("width", 700)
-                    .attr("height", 300);
         
         const nodes = svg.append("g")
-        for (let i=0;i<data.length;i++)
-        { 
-            nodes.selectAll("circle")
-            .data(data)
-            .join("circle")
-                .attr("r", 5)
-                .attr("cx", function(d,i){ 
-                    return i*80+50 })
-                .attr("cy", function(d,i){ 
-                    for (let i=0; i<d; i++){
-                        console.log(i)
-                        return i*80+50
-                    }
-                    })
-                .attr("fill", "#000");
-        }
+        
+        nodes.selectAll("circle")
+        .data(neuronData)
+        .enter()
+        .append("circle")
+          .attr("r", 5)
+          .attr("cx", function (d) {
+            
+            return d.layerConv2DIndex * 80 + 100
+            
+        })
+          .attr("cy", function (d) {
+            
+                
+            return d.neuronIndex * 15+100
+                
+            
+        })
+          .attr("fill", "#000");
+        
         })();
     }, []
     )
