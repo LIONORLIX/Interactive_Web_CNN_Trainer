@@ -5,6 +5,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as d3 from "d3"
 
 import {loadModel} from "../methods/load_model_data.js"
+import {getModel} from "../methods/create_model.js"
 
 function Chart(props) {
 
@@ -16,12 +17,15 @@ function Chart(props) {
     useEffect(() => {
     (async () => {
 
-        const Data = await loadModel();
+        const model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
+
+        // const model = await getModel();
+        const Data = await loadModel(model);
         const layerData = Data.layerJSON;
         const neuronData = Data.neuronJSON;
         setLayerData(layerData);
         setneuronData(neuronData);
-        console.log(neuronData);
+        console.log(layerData);
 
         // data = data.layerConv2DIndex;
         // console.log(layerData);
@@ -42,7 +46,7 @@ function Chart(props) {
           .attr("r", 5)
           .attr("cx", function (d) {
             
-            return d.layerConv2DIndex * 80 + 100
+            return d.layerConv2DIndex * 30 + 100
             
         })
           .attr("cy", function (d) {
