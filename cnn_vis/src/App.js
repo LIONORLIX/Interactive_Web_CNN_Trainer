@@ -14,12 +14,11 @@ import {getModel} from './methods/create_model.js'
 import { showExamples, showAccuracy, showConfusion, train } from './methods/monitor.js';
 
 function App() {
-  // const [items, setItems] = useState([]);
-  // const [newItemName, setNewItemName] = useState("");
-  // const [message, setMessage] = useState("");
+
+  // const [imageData, setImageData] = React.useState([]);
 
   useEffect(() => {
-    
+
     (async ()=>{
 
       const data = new MnistData();
@@ -31,17 +30,14 @@ function App() {
   
       await train(model, data);
 
-      // await showAccuracy(model, data);
-      // await showConfusion(model, data);
-    
     })();
   
   }, []);
 
   return (
     <div>
+      {/* <canvas id='canvas'></canvas> */}
       <Chart/>
-      {/* <Monitor/> */}
     </div>
   );
 }

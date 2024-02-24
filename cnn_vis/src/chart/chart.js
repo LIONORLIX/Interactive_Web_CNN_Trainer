@@ -19,16 +19,12 @@ function Chart(props) {
 
         const model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
 
-        // const model = await getModel();
-        const Data = await loadModel(getModel());
+        const Data = await loadModel(getModel(),props.imageData);
         const layerData = Data.layerJSON;
         const neuronData = Data.neuronJSON;
         setLayerData(layerData);
         setneuronData(neuronData);
         console.log(layerData);
-
-        // data = data.layerConv2DIndex;
-        // console.log(layerData);
 
         const svgContainer = d3.select(ref.current);
         svgContainer.selectAll("*").remove(); // remove former charts to avoid drawing twice or more
@@ -45,21 +41,15 @@ function Chart(props) {
         .append("circle")
           .attr("r", 5)
           .attr("cx", function (d) {
-            
             return d.layerConv2DIndex * 30 + 100
-            
-        })
-          .attr("cy", function (d) {
-            
-                
+          })
+          .attr("cy", function (d) {    
             return d.neuronIndex * 15+100
-                
-            
-        })
+          })
           .attr("fill", "#000");
         
         })();
-    }, []
+    }, [props.imageData]
     )
     
     return (
