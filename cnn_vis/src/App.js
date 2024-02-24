@@ -31,8 +31,8 @@ function App() {
   
       await train(model, data);
 
-      await showAccuracy(model, data);
-      await showConfusion(model, data);
+      // await showAccuracy(model, data);
+      // await showConfusion(model, data);
     
     })();
   

@@ -20,7 +20,7 @@ function Chart(props) {
         const model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
 
         // const model = await getModel();
-        const Data = await loadModel(model);
+        const Data = await loadModel(getModel());
         const layerData = Data.layerJSON;
         const neuronData = Data.neuronJSON;
         setLayerData(layerData);
