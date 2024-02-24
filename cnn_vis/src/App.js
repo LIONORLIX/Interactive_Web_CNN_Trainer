@@ -9,21 +9,21 @@ import './App.css';
 import './chart.css';
 
 import Chart from './chart/chart.js'
-import Monitor from "./methods/monitor.js"
 import {MnistData} from './methods/data.js';
-import { showExamples, getModel, train, showAccuracy, showConfusion, run } from './methods/script.js';
+import {getModel} from './methods/create_model.js'
+import { showExamples, showAccuracy, showConfusion, train } from './methods/monitor.js';
 
 function App() {
-  const [items, setItems] = useState([]);
-  const [newItemName, setNewItemName] = useState("");
-  const [message, setMessage] = useState("");
+  // const [items, setItems] = useState([]);
+  // const [newItemName, setNewItemName] = useState("");
+  // const [message, setMessage] = useState("");
 
   useEffect(() => {
     
     (async ()=>{
-      console.log('2');
+
       const data = new MnistData();
-      console.log('hi');
+
       await data.load();
       await showExamples(data);
       const model = getModel();
