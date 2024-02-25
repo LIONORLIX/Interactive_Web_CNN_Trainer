@@ -4,10 +4,14 @@ import React, { useState, useEffect, useCallback, Component } from "react"
 import * as tf from '@tensorflow/tfjs';
 import * as d3 from "d3"
 
+import { MnistData } from '../methods/data.js';
 import {loadModel} from "../methods/load_model_data.js"
 import {getModel} from "../methods/create_model.js"
+import { showExamples,getImageTensor } from '../methods/show_image_data.js'
 
 function Chart(props) {
+
+
 
     const ref = React.useRef(null) // Use React ref to control DOM elements for D3
     // const [layers, setLayers] = useState([]);
@@ -17,9 +21,13 @@ function Chart(props) {
     useEffect(() => {
     (async () => {
 
-        const model = await tf.loadLayersModel('https://storage.googleapis.com/tfjs-models/tfjs/mobilenet_v1_0.25_224/model.json');
+      const data = new MnistData();
+      await data.load();
+      const inputData = await getImageTensor(data); // Creates a tensor of ones
 
-        const Data = await loadModel(getModel(),props.imageData);
+        console.log("This is value: " + props.testValue);
+
+        const Data = await loadModel(getModel(),inputData);
         const layerData = Data.layerJSON;
         const neuronData = Data.neuronJSON;
         setLayerData(layerData);
@@ -49,7 +57,7 @@ function Chart(props) {
           .attr("fill", "#000");
         
         })();
-    }, [props.imageData]
+    }, [props.testValue]
     )
     
     return (

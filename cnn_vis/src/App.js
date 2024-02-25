@@ -9,35 +9,39 @@ import './App.css';
 import './chart.css';
 
 import Chart from './chart/chart.js'
-import {MnistData} from './methods/data.js';
-import {getModel} from './methods/create_model.js'
-import { showExamples, showAccuracy, showConfusion, train } from './methods/monitor.js';
+import { MnistData } from './methods/data.js';
+import { getModel } from './methods/create_model.js'
+import { showAccuracy, showConfusion, train } from './methods/train_model.js';
+import { showExamples,getImageTensor } from './methods/show_image_data.js'
 
 function App() {
 
-  // const [imageData, setImageData] = React.useState([]);
+  const [imageData, setImageData] = useState([]);
+  const [testValue, setTestValue] = useState(0);
 
   useEffect(() => {
 
     (async ()=>{
 
       const data = new MnistData();
-
       await data.load();
       await showExamples(data);
+
       const model = getModel();
       tfvis.show.modelSummary({name: 'Model Architecture', tab: 'Model'}, model);
   
       await train(model, data);
 
     })();
-  
+
+    setTestValue(20);
+
   }, []);
 
   return (
     <div>
-      {/* <canvas id='canvas'></canvas> */}
-      <Chart/>
+      <canvas id='hahaha'></canvas>
+      <Chart testValue={testValue}/>
     </div>
   );
 }
