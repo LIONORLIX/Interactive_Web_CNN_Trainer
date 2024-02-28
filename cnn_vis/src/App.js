@@ -12,7 +12,9 @@ import Chart from './chart/chart.js'
 import { MnistData } from './methods/data.js';
 import { getModel } from './methods/create_model.js'
 import { showAccuracy, showConfusion, train } from './methods/train_model.js';
-import { showExamples,getImageTensor } from './methods/show_image_data.js'
+import { showExamples, getImageTensor } from './methods/show_image_data.js'
+
+import { test } from './methods/smallTest.js'
 
 function App() {
 
@@ -21,16 +23,18 @@ function App() {
 
   useEffect(() => {
 
-    (async ()=>{
+    (async () => {
 
       const data = new MnistData();
       await data.load();
       await showExamples(data);
 
       const model = getModel();
-      tfvis.show.modelSummary({name: 'Model Architecture', tab: 'Model'}, model);
-  
+      tfvis.show.modelSummary({ name: 'Model Architecture', tab: 'Model' }, model);
+
       await train(model, data);
+
+      // test(data);
 
     })();
 
@@ -41,7 +45,7 @@ function App() {
   return (
     <div>
       <canvas id='hahaha'></canvas>
-      <Chart testValue={testValue}/>
+      <Chart testValue={testValue} />
     </div>
   );
 }
