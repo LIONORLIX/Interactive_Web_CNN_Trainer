@@ -30,7 +30,8 @@ function Chart(props) {
       const neuronData = Data.neuronJSON;
       setLayerData(layerData);
       setneuronData(neuronData);
-      console.log(layerData);
+      // console.log(layerData);
+      console.log(neuronData);
 
       const svgContainer = d3.select(ref.current);
       svgContainer.selectAll("*").remove(); // remove former charts to avoid drawing twice or more

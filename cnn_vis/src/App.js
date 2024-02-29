@@ -44,7 +44,6 @@ function App() {
 
   return (
     <div>
-      <canvas id='hahaha'></canvas>
       <Chart testValue={testValue} />
     </div>
   );

@@ -29,11 +29,32 @@ export async function loadModel(model, inputData) {
         const internalImageTensor = internalLayerModel.predict(reshapedInputData);
 
         // turn tensor to array
-        let tensorValue = await internalImageTensor.array();
+        let layerTensorValue = await internalImageTensor.array();
+
+        // console.log(layerTensorValue);
 
         if (layerType === 'Conv2D') {
+
             neuronCount = layer.filters;
-            for (let i = 0; i < neuronCount; i++) {
+            
+            for (let i = 0; i < layer.filters; i++) {
+
+                let tensorValue = [];
+
+                // console.log('l1:'+layerTensorValue[0]);
+                // console.log('l2:'+layerTensorValue[0].length);
+                // console.log('l3:'+layerTensorValue[0][0].length);
+                // console.log(layerTensorValue[0][0]);
+                // console.log('neuron:'+layerTensorValue[0][0][i]);
+                
+
+                for (let x=0; x<layerTensorValue[0].length; x++){
+                    tensorValue.push([]);
+                    for (let y=0; y<layerTensorValue[0][x].length;y++){
+                        tensorValue[x].push(layerTensorValue[0][x][y][i]);
+                    }
+                }
+
                 neuronJSON.push({
                     'layerInput': layer.input,
                     'layerOutput': layer.output,
@@ -62,7 +83,7 @@ export async function loadModel(model, inputData) {
                 'layerType': layerType,
                 'neuronCount': neuronCount,
                 'layerConv2DIndex': layerConv2DIndex,
-                'tensor': tensorValue
+                'tensor': layerTensorValue
             })
 
         } else {
@@ -75,7 +96,7 @@ export async function loadModel(model, inputData) {
                 'layerIndex': index,
                 'layerType': layerType,
                 'layerConv2DIndex': layerConv2DIndex,
-                'tensor': tensorValue
+                'tensor': layerTensorValue
             })
         }
 
