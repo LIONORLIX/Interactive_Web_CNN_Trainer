@@ -11,8 +11,6 @@ import { showExamples, getImageTensor } from '../methods/show_image_data.js'
 
 function Chart(props) {
 
-
-
   const ref = React.useRef(null) // Use React ref to control DOM elements for D3
   // const [layers, setLayers] = useState([]);
   const [layerData, setLayerData] = useState([]);
