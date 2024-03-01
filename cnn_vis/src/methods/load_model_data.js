@@ -39,7 +39,8 @@ export async function loadModel(model, inputData) {
             
             for (let i = 0; i < layer.filters; i++) {
 
-                let tensorValue = [];
+                let tensorValue2D = [];
+                let tensorValue1D = [];
 
                 // console.log('l1:'+layerTensorValue[0]);
                 // console.log('l2:'+layerTensorValue[0].length);
@@ -49,9 +50,10 @@ export async function loadModel(model, inputData) {
                 
 
                 for (let x=0; x<layerTensorValue[0].length; x++){
-                    tensorValue.push([]);
+                    tensorValue2D.push([]);
                     for (let y=0; y<layerTensorValue[0][x].length;y++){
-                        tensorValue[x].push(layerTensorValue[0][x][y][i]);
+                        tensorValue2D[x].push(layerTensorValue[0][x][y][i]);
+                        tensorValue1D.push(layerTensorValue[0][x][y][i]);
                     }
                 }
 
@@ -65,7 +67,8 @@ export async function loadModel(model, inputData) {
                     'neuronIndex': i,
                     'layerType': layerType,
                     'layerConv2DIndex': layerConv2DIndex,
-                    'tensor': tensorValue
+                    'tensor2D': tensorValue2D,
+                    'tensor1D': tensorValue1D,
                 })
             }
             layerConv2DIndex += 1;

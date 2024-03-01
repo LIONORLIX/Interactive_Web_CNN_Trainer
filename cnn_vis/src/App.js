@@ -34,7 +34,7 @@ function App() {
 
       await train(model, data);
 
-      // test(data);
+      test(data);
 
     })();
 
