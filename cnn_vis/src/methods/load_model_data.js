@@ -14,11 +14,13 @@ export async function loadModel(model, inputData) {
     let neuronJSON = [];
     let layerConv2DIndex = 0;
 
+    let prevNeuronCount = 1;
+
     
     for (const [index, layer] of model.layers.entries()) { // can't use forEach() because 'await' must stay inside async function
         const layerType = layer.getClassName();
         let neuronCount = -1;
-
+        
         const reshapedInputData = inputData.reshape([1, 28, 28, 1]);
         const internalLayerModel = tf.model({
             inputs: model.input,
@@ -33,7 +35,7 @@ export async function loadModel(model, inputData) {
 
         // console.log(layerTensorValue);
 
-        if (layerType === 'Conv2D') {
+        // if (layerType === 'Conv2D') {
 
             neuronCount = layer.filters;
             
@@ -41,13 +43,6 @@ export async function loadModel(model, inputData) {
 
                 let tensorValue2D = [];
                 let tensorValue1D = [];
-
-                // console.log('l1:'+layerTensorValue[0]);
-                // console.log('l2:'+layerTensorValue[0].length);
-                // console.log('l3:'+layerTensorValue[0][0].length);
-                // console.log(layerTensorValue[0][0]);
-                // console.log('neuron:'+layerTensorValue[0][0][i]);
-                
 
                 for (let x=0; x<layerTensorValue[0].length; x++){
                     tensorValue2D.push([]);
@@ -69,10 +64,14 @@ export async function loadModel(model, inputData) {
                     'layerConv2DIndex': layerConv2DIndex,
                     'tensor2D': tensorValue2D,
                     'tensor1D': tensorValue1D,
+                    'prevNeuronCount': prevNeuronCount
                 })
+
+                
             }
+            prevNeuronCount = layer.filters;
             layerConv2DIndex += 1;
-        }
+        // }
 
         if (layerType === 'Conv2D') {
             neuronCount = layer.filters;

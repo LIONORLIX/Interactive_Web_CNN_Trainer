@@ -1,4 +1,5 @@
 //https://blog.logrocket.com/getting-started-d3-js-react/
+// https://www.w3schools.com/graphics/svg_path.asp
 
 import React, { useState, useEffect, useCallback, Component } from "react"
 import * as tf from '@tensorflow/tfjs';
@@ -30,7 +31,7 @@ function Chart(props) {
       const neuronData = Data.neuronJSON;
       setLayerData(layerData);
       setneuronData(neuronData);
-      // console.log(layerData);
+      console.log(layerData);
       // console.log(neuronData);
       // console.log(neuronData[0]["tensor1D"]);
 
@@ -43,52 +44,44 @@ function Chart(props) {
 
       const nodes = svg.append("g")
 
-//       var margin = {top: 5, right: 5, bottom: 5, left: 5},
-//     width = 50 - margin.left - margin.right,
-//     height = 50 - margin.top - margin.bottom;
-
-//       var x = d3.scaleLinear()
-//     .range([0, width])
-//     .domain([0,neuronData[0].tensor2D.length]);
-
-// var y = d3.scaleLinear()
-//     .range([0, height])
-//     .domain([0,neuronData[0].tensor2D.length]);
-
-var rowCnt = 0;
-var clnCnt = 0;
-
-    var colorLow = 'green', colorMed = 'yellow', colorHigh = 'red';
-
-var colorScale = d3.scaleLinear()
-     .domain([0, 1])
-     .range([colorLow, colorHigh]);
-
-      // nodes.selectAll("circle")
-      //   .data(neuronData)
-      //   .enter()
-      //   .append("circle")
-      //   .attr("r", 5)
-      //   .attr("cx", function (d) {
-      //     return d.layerConv2DIndex * 30 + 100
-      //   })
-      //   .attr("cy", function (d) {
-      //     return d.neuronIndex * 15 + 100
-      //   })
-      //   .attr("fill", "#000")
-
       let neuron = nodes.selectAll(".neuron")
         .data(neuronData)
         .enter()
            .append("g")
              .attr("class",function (d,i) { return "neuron_"+i })
-             .attr("transform", function(d, i) {return "translate(" + (d.layerConv2DIndex * 100 + 40) + "," +  (d.neuronIndex * 50 + 20) + ")"; });
-            //  .attr("x", function (d) {
-            //   return d.layerConv2DIndex * 30 + 100
-            // })
-            // .attr("y", function (d) {
-            //   return d.neuronIndex * 15 + 100
-            // })
+             .attr("transform", function(d, i) {return "translate(" + (d.layerConv2DIndex * 200 + 200) + "," +  (d.neuronIndex * 50 + 50) + ")"; });
+      
+      let path = neuron.selectAll(".path")
+             .data(function (d,i) { 
+               let formerNeurons = [];
+               let dual_array = [];
+               let num = 0;
+               for (let i=0;i<d.prevNeuronCount;i++){
+                 
+                 dual_array.push(num);
+                 dual_array.push(d.neuronIndex);
+                 formerNeurons.push(dual_array);
+                 dual_array = [];
+                 num += 1;
+
+               }
+               return formerNeurons;
+             })
+             .enter()
+             .append("line")
+                 .attr("class",function (d,i) { return "path" })
+                 .join("line")
+                 .attr("x1", 0)
+                 .attr("y1", 0)
+                 .attr("x2", -200)
+                 .attr("y2", function(d){
+                  return 50*d[0]-50*d[1]
+                })
+                 .attr("stroke-width", 1)
+                 .attr("stroke", "gray")
+                 .attr("transform", function(d, i) {return "translate(20,20)"; })
+                 //  .moveTo(10, 10)
+                 //   .bezierCurveTo(95, 10, 50, 90, 10, 10);
 
       let row = neuron.selectAll(".row")
         .data(function (d) { return d.tensor2D })
@@ -100,7 +93,7 @@ var colorScale = d3.scaleLinear()
       let pixel = row.selectAll(".pixel")
       .data(function (d,i) { return d })
         .enter() 
-        .append("rect") // 这里以矩形为例
+        .append("rect")
         .attr("class", "pixel")
              .attr("x", function(d, i) { 
               return i*2; 
@@ -108,7 +101,6 @@ var colorScale = d3.scaleLinear()
              .attr("width", 2)
              .attr("height", 2)
              .attr("fill", function(d) { return "rgb("+ d*255 + ","+ d*255 + ","+ d*255 + ")"; });
-
 
     })();
   }, [props.testValue]

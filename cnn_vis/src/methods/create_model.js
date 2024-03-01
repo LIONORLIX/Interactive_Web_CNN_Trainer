@@ -32,7 +32,7 @@ export function getModel() {
 
     model.add(tf.layers.conv2d({
       kernelSize: 5,
-      filters: 16,
+      filters: 8,
       strides: 1,
       activation: 'relu', 
       kernelInitializer: 'varianceScaling'
