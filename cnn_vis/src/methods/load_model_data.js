@@ -12,15 +12,28 @@ export async function loadModel(model, inputData) {
 
     let layerJSON = [];
     let neuronJSON = [];
-    let layerConv2DIndex = 0;
+    let layerConv2DCnt = 0;
+    let layerPoolingCnt = 0;
+    let layerDenseCnt = 0;
 
     let prevNeuronCount = 1;
+    let neuronCount = -1;
 
-    
+    let sizeCnt = 28;
+
+    // let convCnt = 0;
+    // let poolingCnt = 0;
+    // let flattenCnt = 0;
+    // let softmaxCnt = 0;
+
+    let historyLayer = [0, 0, 0, 0];
+    let historySize = [];
+
+
     for (const [index, layer] of model.layers.entries()) { // can't use forEach() because 'await' must stay inside async function
+
         const layerType = layer.getClassName();
-        let neuronCount = -1;
-        
+
         const reshapedInputData = inputData.reshape([1, 28, 28, 1]);
         const internalLayerModel = tf.model({
             inputs: model.input,
@@ -35,45 +48,74 @@ export async function loadModel(model, inputData) {
 
         // console.log(layerTensorValue);
 
-        // if (layerType === 'Conv2D') {
+        if (layerType == 'Conv2D') {
 
+            layerConv2DCnt += 1;
             neuronCount = layer.filters;
-            
-            for (let i = 0; i < layer.filters; i++) {
+            sizeCnt += layer.input.shape[1];
 
-                let tensorValue2D = [];
-                let tensorValue1D = [];
+        } else if (layerType == 'MaxPooling2D') {
 
-                for (let x=0; x<layerTensorValue[0].length; x++){
+            layerPoolingCnt += 1;
+            sizeCnt += layer.input.shape[1];
+
+        } else if (layerType == 'Dense') {
+
+            layerDenseCnt += 1;
+            sizeCnt += 2;
+            neuronCount = layerTensorValue[0].length
+        }
+
+
+        for (let i = 0; i < neuronCount; i++) {
+
+            let tensorValue2D = [];
+            let tensorValue1D = [];
+
+            if (layerType == 'Dense'){
+                
+                for (let x = 0; x < 1; x++) {
                     tensorValue2D.push([]);
-                    for (let y=0; y<layerTensorValue[0][x].length;y++){
+                    for (let y = 0; y < 1; y++) {
+                        tensorValue2D[x].push(layerTensorValue[0][i]);
+                        tensorValue1D.push(layerTensorValue[0][i]);
+                    }
+                }
+            }else{
+                
+                for (let x = 0; x < layerTensorValue[0].length; x++) {
+                    tensorValue2D.push([]);
+                    for (let y = 0; y < layerTensorValue[0][x].length; y++) {
                         tensorValue2D[x].push(layerTensorValue[0][x][y][i]);
                         tensorValue1D.push(layerTensorValue[0][x][y][i]);
                     }
                 }
-
-                neuronJSON.push({
-                    'layerInput': layer.input,
-                    'layerOutput': layer.output,
-                    'kernelSize': layer.kernelSize,
-                    'activation': layer.activation,
-                    'layerName': layer.name,
-                    'layerIndex': index,
-                    'neuronIndex': i,
-                    'layerType': layerType,
-                    'layerConv2DIndex': layerConv2DIndex,
-                    'tensor2D': tensorValue2D,
-                    'tensor1D': tensorValue1D,
-                    'prevNeuronCount': prevNeuronCount
-                })
-
-                
             }
-            prevNeuronCount = layer.filters;
-            layerConv2DIndex += 1;
-        // }
 
-        if (layerType === 'Conv2D') {
+            neuronJSON.push({
+                'layerInput': layer.input,
+                'layerOutput': layer.output,
+                'kernelSize': layer.kernelSize,
+                'activation': layer.activation,
+                'layerName': layer.name,
+                'layerIndex': index,
+                'neuronIndex': i,
+                'layerType': layerType,
+                'layerConv2DCnt': layerConv2DCnt,
+                'layerPoolingCnt': layerPoolingCnt,
+                'layerDenseCnt': layerDenseCnt,
+                'sizeCnt': sizeCnt,
+                'tensor2D': tensorValue2D,
+                'tensor1D': tensorValue1D,
+                'prevNeuronCount': prevNeuronCount,
+            })
+        }
+        prevNeuronCount = neuronCount;
+        // layerConv2DCnt += 1;
+
+
+
+        if (layerType == 'Conv2D') {
             neuronCount = layer.filters;
             layerJSON.push({
                 'layerInput': layer.input,
@@ -84,7 +126,7 @@ export async function loadModel(model, inputData) {
                 'layerIndex': index,
                 'layerType': layerType,
                 'neuronCount': neuronCount,
-                'layerConv2DIndex': layerConv2DIndex,
+                'layerConv2DCnt': layerConv2DCnt,
                 'tensor': layerTensorValue
             })
 
@@ -97,7 +139,7 @@ export async function loadModel(model, inputData) {
                 'layerName': layer.name,
                 'layerIndex': index,
                 'layerType': layerType,
-                'layerConv2DIndex': layerConv2DIndex,
+                'layerConv2DCnt': layerConv2DCnt,
                 'tensor': layerTensorValue
             })
         }

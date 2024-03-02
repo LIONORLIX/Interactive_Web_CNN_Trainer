@@ -41,13 +41,13 @@ export function getModel() {
     // model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}));
 
     // Here is the layer I added
-    model.add(tf.layers.conv2d({
-      kernelSize: 5,
-      filters: 16,
-      strides: 1,
-      activation: 'relu', 
-      kernelInitializer: 'varianceScaling'
-    }));
+    // model.add(tf.layers.conv2d({
+    //   kernelSize: 3,
+    //   filters: 16,
+    //   strides: 1,
+    //   activation: 'relu', 
+    //   kernelInitializer: 'varianceScaling'
+    // }));
   
     model.add(tf.layers.maxPooling2d({poolSize: [2, 2], strides: [2, 2]}));
     

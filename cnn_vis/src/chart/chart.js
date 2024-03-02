@@ -38,7 +38,7 @@ function Chart(props) {
       setLayerData(layerData);
       setneuronData(neuronData);
       console.log(layerData);
-      // console.log(neuronData);
+      console.log(neuronData);
       // console.log(neuronData[0]["tensor1D"]);
 
       const svgContainer = d3.select(ref.current);
@@ -47,6 +47,7 @@ function Chart(props) {
       // create svg chart
       const svg = svgContainer
         .append("svg")
+        // .attr("width","300")
 
       const nodes = svg.append("g")
 
@@ -55,19 +56,23 @@ function Chart(props) {
         .enter()
         .append("g")
         .attr("class", function (d, i) { return "connection" })
-        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * neuronHorizontalDis + neuronHorizontalDis +chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset) + ")"; });
+        .attr("transform", function (d, i) { 
+          return "translate(" + ( d.sizeCnt*pixelSize + d.layerConv2DCnt * neuronHorizontalDis + d.layerPoolingCnt * neuronHorizontalDis/4 + d.layerDenseCnt * neuronHorizontalDis + chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset+2) + ")"; 
+        });
 
       let path = connection.selectAll(".path")
         .data(function (d, i) {
           let formerNeurons = [];
-          let dual_array = [];
+          let info_array = [];
           let num = 0;
           for (let i = 0; i < d.prevNeuronCount; i++) {
 
-            dual_array.push(num);
-            dual_array.push(d.neuronIndex);
-            formerNeurons.push(dual_array);
-            dual_array = [];
+            info_array.push(num);
+            info_array.push(d.neuronIndex);
+            info_array.push(d.layerType);
+
+            formerNeurons.push(info_array);
+            info_array = [];
             num += 1;
 
           }
@@ -78,10 +83,24 @@ function Chart(props) {
         .attr("class", function (d, i) { return "path" })
         .join("path")
         .attr("d", function (d) {
-          let x1 = -neuronHorizontalDis;
-          let y1 = neuronVerticalDis * d[0] - neuronVerticalDis * d[1];
-          let x2 = 0;
-          let y2 = 0;
+
+          let x1;
+          let y1;
+          let x2;
+          let y2;
+
+          if (d[2]=='Conv2D' || d[2]=='Dense'){
+            x1 = -neuronHorizontalDis;
+            y1 = neuronVerticalDis * d[0] - neuronVerticalDis * d[1];
+            x2 = 0;
+            y2 = 0;
+          }else{
+            x1 = -neuronHorizontalDis/4;
+            y1 = 0;
+            x2 = 0;
+            y2 = 0;
+          }
+          
           return "M " + x1 + " " + y1 + " " + "C " + (x1 + curveOffset) + " " + y1 + "," + (x2 - curveOffset) + " " + y2 + "," + x2 + " " + y2
         })
         .attr("stroke-width", 1)
@@ -93,7 +112,9 @@ function Chart(props) {
         .enter()
         .append("g")
         .attr("class", function (d, i) { return "neuron_" + i })
-        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * neuronHorizontalDis + neuronHorizontalDis + chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset) + ")"; })
+        .attr("transform", function (d, i) { 
+          return "translate(" + (d.sizeCnt*pixelSize + d.layerConv2DCnt * neuronHorizontalDis + d.layerPoolingCnt * neuronHorizontalDis/4 + d.layerDenseCnt * neuronHorizontalDis + chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset) + ")"; 
+        })
 
 
       let row = neuron.selectAll(".row")
@@ -114,6 +135,7 @@ function Chart(props) {
         .attr("width", pixelSize)
         .attr("height", pixelSize)
         .attr("fill", function (d) { return "rgb(" + d * 255 + "," + d * 255 + "," + d * 255 + ")"; });
+
 
     })();
   }, [props.testValue]
