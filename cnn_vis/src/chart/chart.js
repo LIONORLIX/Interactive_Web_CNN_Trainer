@@ -24,6 +24,12 @@ function Chart(props) {
       await data.load();
       const inputData = await getImageTensor(data); // Creates a tensor of ones
 
+      const chartOffset = 20;
+      const pixelSize = 1.5;
+      const neuronVerticalDis = 50;
+      const neuronHorizontalDis = 200;
+      const curveOffset = 80;
+
       console.log("This is value: " + props.testValue);
 
       const Data = await loadModel(getModel(), inputData);
@@ -49,7 +55,7 @@ function Chart(props) {
         .enter()
         .append("g")
         .attr("class", function (d, i) { return "connection" })
-        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * 200 + 220) + "," + (d.neuronIndex * 50 + 20) + ")"; });
+        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * neuronHorizontalDis + neuronHorizontalDis +chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset) + ")"; });
 
       let path = connection.selectAll(".path")
         .data(function (d, i) {
@@ -72,11 +78,11 @@ function Chart(props) {
         .attr("class", function (d, i) { return "path" })
         .join("path")
         .attr("d", function (d) {
-          let x1 = -200;
-          let y1 = 50 * d[0] - 50 * d[1];
+          let x1 = -neuronHorizontalDis;
+          let y1 = neuronVerticalDis * d[0] - neuronVerticalDis * d[1];
           let x2 = 0;
           let y2 = 0;
-          return "M " + x1 + " " + y1 + " " + "C " + (x1 + 80) + " " + y1 + "," + (x2 - 80) + " " + y2 + "," + x2 + " " + y2
+          return "M " + x1 + " " + y1 + " " + "C " + (x1 + curveOffset) + " " + y1 + "," + (x2 - curveOffset) + " " + y2 + "," + x2 + " " + y2
         })
         .attr("stroke-width", 1)
         .attr("stroke", "gray")
@@ -87,7 +93,7 @@ function Chart(props) {
         .enter()
         .append("g")
         .attr("class", function (d, i) { return "neuron_" + i })
-        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * 200 + 220) + "," + (d.neuronIndex * 50 + 20) + ")"; })
+        .attr("transform", function (d, i) { return "translate(" + (d.layerConv2DIndex * neuronHorizontalDis + neuronHorizontalDis + chartOffset) + "," + (d.neuronIndex * neuronVerticalDis + chartOffset) + ")"; })
 
 
       let row = neuron.selectAll(".row")
@@ -95,7 +101,7 @@ function Chart(props) {
         .enter()
         .append("g")
         .attr("class", "row")
-        .attr("transform", function (d, i) { return "translate(0," + i * 1.5 + ")"; });
+        .attr("transform", function (d, i) { return "translate(0," + i * pixelSize + ")"; });
 
       let pixel = row.selectAll(".pixel")
         .data(function (d, i) { return d })
@@ -103,10 +109,10 @@ function Chart(props) {
         .append("rect")
         .attr("class", "pixel")
         .attr("x", function (d, i) {
-          return i * 1.5;
+          return i * pixelSize;
         })
-        .attr("width", 1.5)
-        .attr("height", 1.5)
+        .attr("width", pixelSize)
+        .attr("height", pixelSize)
         .attr("fill", function (d) { return "rgb(" + d * 255 + "," + d * 255 + "," + d * 255 + ")"; });
 
     })();
