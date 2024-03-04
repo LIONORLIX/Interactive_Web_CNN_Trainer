@@ -8,10 +8,11 @@
 
 import * as tf from '@tensorflow/tfjs';
 
-export async function loadModel(model, inputData) {
+export async function loadModel(model, inputDataUnreshaped) {
 
     let layerJSON = [];
     let neuronJSON = [];
+    let inputData = inputDataUnreshaped.reshape([1, 28, 28, 1]);
     let layerConv2DCnt = 0;
     let layerPoolingCnt = 0;
     let layerDenseCnt = 0;
@@ -20,7 +21,6 @@ export async function loadModel(model, inputData) {
     let neuronCount = -1;
 
     let sizeCnt = 28;
-
     // let convCnt = 0;
     // let poolingCnt = 0;
     // let flattenCnt = 0;
@@ -29,19 +29,19 @@ export async function loadModel(model, inputData) {
     let historyLayer = [0, 0, 0, 0];
     let historySize = [];
 
+    let originalImage = await inputData.array();
+
 
     for (const [index, layer] of model.layers.entries()) { // can't use forEach() because 'await' must stay inside async function
 
         const layerType = layer.getClassName();
-
-        const reshapedInputData = inputData.reshape([1, 28, 28, 1]);
         const internalLayerModel = tf.model({
             inputs: model.input,
             outputs: layer.output
         });
 
         // Get the actual data tensor from this intermediate layer
-        const internalImageTensor = internalLayerModel.predict(reshapedInputData);
+        const internalImageTensor = internalLayerModel.predict(inputData);
 
         // turn tensor to array
         let layerTensorValue = await internalImageTensor.array();
@@ -148,6 +148,6 @@ export async function loadModel(model, inputData) {
 
     console.log('Model loaded successfully');
     // console.log(layerJSON)
-    return { layerJSON: layerJSON, neuronJSON: neuronJSON };
+    return { layerJSON: layerJSON, neuronJSON: neuronJSON, originalImage: originalImage };
 
 };
