@@ -20,7 +20,7 @@ export async function loadModel(model, inputDataUnreshaped) {
     let prevNeuronCount = 1;
     let neuronCount = -1;
 
-    let sizeCnt = 28;
+    let sizeCnt = 0;
     // let convCnt = 0;
     // let poolingCnt = 0;
     // let flattenCnt = 0;

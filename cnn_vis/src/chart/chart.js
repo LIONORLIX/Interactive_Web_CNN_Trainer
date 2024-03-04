@@ -25,8 +25,8 @@ function Chart(props) {
       const inputData = await getImageTensor(data); // Creates a tensor of ones
 
       const chartOffset = 20;
-      const pixelSize = 2;
-      const neuronHorizontalDis = 80;
+      const pixelSize = 1.5;
+      const neuronHorizontalDis = 60;
       const neuronVerticalDis = 150;
       const curveOffset = 50;
 
@@ -53,7 +53,7 @@ function Chart(props) {
       const svg = svgContainer
         .append("svg")
         .attr("id", "chart")
-        .attr("viewBox", "0 0 1000 1000")
+        // .attr("viewBox", "0 0 1000 1000")
 
       const nodes = svg.append("g")
 
@@ -63,7 +63,7 @@ function Chart(props) {
         .append("g")
         .attr("class", function (d, i) { return "connection" })
         .attr("transform", function (d, i) { 
-          return "translate(" +  (d.neuronIndex * neuronHorizontalDis + chartOffset + 1 ) + "," + (d.sizeCnt*pixelSize + d.layerConv2DCnt * neuronVerticalDis + d.layerPoolingCnt * neuronVerticalDis/4 + d.layerDenseCnt * neuronVerticalDis + chartOffset) + ")"; 
+          return "translate(" +  (d.neuronIndex * neuronHorizontalDis + chartOffset + 1 ) + "," + (d.sizeCnt * pixelSize + d.layerConv2DCnt * neuronVerticalDis + d.layerPoolingCnt * neuronVerticalDis/4 + d.layerDenseCnt * neuronVerticalDis + chartOffset ) + ")"; 
         });
 
       let path = connection.selectAll(".path")
@@ -102,7 +102,10 @@ function Chart(props) {
             y2 = 0;
             x2 = 0;
           }
-          return "M " + x1 + " " + y1 + " " + "C " + (x1) + " " + (y1 + curveOffset) + "," + (x2) + " " + (y2 - curveOffset) + "," + x2 + " " + y2
+          return "M " + x1 + " " + y1 + " " 
+          + "C " + (x1) + " " + (y1 + curveOffset) + "," 
+          + (x2) + " " + (y2 - curveOffset) + "," 
+          + x2 + " " + y2
 
         })
         .attr("stroke-width", 1)
