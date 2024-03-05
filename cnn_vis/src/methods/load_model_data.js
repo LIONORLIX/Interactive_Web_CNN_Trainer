@@ -5,6 +5,7 @@
 // https://stackoverflow.com/questions/46715484/correct-async-function-export-in-node-js
 // https://stackoverflow.com/questions/50942677/tensorflowjs-how-to-get-inner-layer-output-in-a-cnn-prediction
 // https://stackoverflow.com/questions/49869302/get-the-value-of-an-item-in-a-tensor-in-tensorflow-js
+// https://stackoverflow.com/questions/50091466/getting-weights-from-tensorflow-js-neural-network
 
 import * as tf from '@tensorflow/tfjs';
 
@@ -81,7 +82,7 @@ export async function loadModel(model, inputDataUnreshaped) {
                         tensorValue1D.push(layerTensorValue[0][i]);
                     }
                 }
-            }else{
+            }else{  
                 
                 for (let x = 0; x < layerTensorValue[0].length; x++) {
                     tensorValue2D.push([]);
@@ -108,6 +109,7 @@ export async function loadModel(model, inputDataUnreshaped) {
                 'tensor2D': tensorValue2D,
                 'tensor1D': tensorValue1D,
                 'prevNeuronCount': prevNeuronCount,
+                'weights':model.getWeights()[i],
             })
         }
         prevNeuronCount = neuronCount;

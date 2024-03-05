@@ -20,7 +20,7 @@ import { test } from './methods/smallTest.js'
 function App() {
 
   const [imageData, setImageData] = useState([]);
-  const [testValue, setTestValue] = useState(0);
+  const [testValue, setTestValue] = useState(20);
 
   const [modelConfig, setModelConfig] = useState([
     { 
@@ -58,9 +58,6 @@ function App() {
 
   useEffect(() => {
 
-    // setModelConfig(modelConfig)
-    // console.log("1"+modelConfig);
-
     (async () => {
 
       const data = new MnistData();
@@ -76,9 +73,6 @@ function App() {
       // setModelConfig(modelConfig);
 
     })();
-
-    
-    setTestValue(20);
 
   }, []);
 

@@ -175,7 +175,7 @@ function Chart(props) {
   )
 
   return (
-    <div id={'chart-container'} ref={ref}></div>
+    <div class={'chart-container'} ref={ref}></div>
   )
 }
 
