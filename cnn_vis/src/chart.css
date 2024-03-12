@@ -119,6 +119,20 @@
     border: #494949 2px solid;
 }
 
+.change-button{
+    display: inline-block;
+    border: #494949 1px solid;
+    border-radius: 12px;
+    background-color: #000000;
+    text-align: left;
+    padding: 5%;
+    margin-bottom: 0.7rem;
+    transition: 300ms;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+}
+
 .d3-tip {
     /* position: absolute!important;
     right: 0!important;

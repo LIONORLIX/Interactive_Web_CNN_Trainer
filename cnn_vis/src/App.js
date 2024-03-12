@@ -7,11 +7,15 @@ import logo from './logo.svg';
 import React, { useState, useEffect } from 'react';
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis'
+
 import './App.css';
 import './chart.css';
+import './ui.css';
 
 import Chart from './chart/chart.js'
+
 import ControlBar from './UI/ControlBar'
+import ChangeImage from './UI/ChangeImage'
 
 import { MnistData } from './methods/data.js';
 import { createModel } from './methods/create_model.js'
@@ -22,7 +26,8 @@ import { test } from './methods/smallTest.js'
 
 function App() {
 
-  const [imageData, setImageData] = useState([]);
+  const [data, setData] = useState(null);
+  const [inputData, setInputData] = useState(null);
 
   const [isTraining, setIsTraining] = useState(false);
   const [isTrainingDone, setIsTrainingDone] = useState(false);
@@ -63,15 +68,48 @@ function App() {
 
   const [modelInfo, setModelInfo] = useState(null);
 
+  const [isChangeImage, setIsChangeImage] = useState(false);
+
+
+  useEffect(() => {
+
+    (async () => {
+      console.log("APP part0 start rendering.");
+
+      const newData = new MnistData();
+      await newData.load();
+      setData(newData);
+      if (data){
+        const newInputData = await getImageTensor(data);
+        setInputData(newInputData)
+      }
+      console.log("APP part0 rendered.");
+
+    })();
+
+  }, []);
+
+  useEffect(() => {
+
+    (async () => {
+      console.log("APP part0 start rendering.");
+
+      if (data){
+        const newInputData = await getImageTensor(data);
+        setInputData(newInputData)
+      }
+      console.log("APP part0 rendered.");
+
+    })();
+
+  }, [data, isChangeImage]);
+
   // This part set and train the model
   useEffect(() => {
 
     (async () => {
-
+      if (data) {
       console.log("APP part1 start rendering.");
-
-      const data = new MnistData();
-      await data.load();
 
       if (!isTraining) {
         let newModel = createModel(modelConfig)
@@ -80,34 +118,32 @@ function App() {
         await train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs);
       }
       console.log("APP part1 rendered.");
+    }
 
     })();
 
-  }, [modelConfig, isTraining]);
+  }, [modelConfig, isTraining, data]);
 
   // This part get the data of model and pass to the CHART
 
   useEffect(() => {
 
     (async () => {
-
+      if (data && inputData) {
       console.log("APP part2 start rendering.");
 
-      const data = new MnistData();
-      await data.load();
-
       if (model) {
-        const inputData = await getImageTensor(data);
         const newModelInfo = await loadModelData(model, inputData);
         setModelInfo(newModelInfo);
         console.log(modelConfig)
       }
 
       console.log("APP part2 rendered.");
+    }
 
     })();
 
-  }, [model, isTrainingDone]);
+  }, [model, isTrainingDone, data, inputData]);
 
   function trainingToggle() {
     let newTraining = !isTraining;
@@ -120,6 +156,7 @@ function App() {
       {modelInfo && (
         <Chart
           modelInfo={modelInfo}
+          epoch={epoch}
         />
       )}
       <ControlBar
@@ -130,6 +167,10 @@ function App() {
         isTrainingDone={isTrainingDone}
         trainingLogs={trainingLogs}
         epoch={epoch}
+      />
+      <ChangeImage
+        isChangeImage = {isChangeImage}
+        setIsChangeImage = {setIsChangeImage}
       />
     </div>
   );

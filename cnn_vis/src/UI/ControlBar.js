@@ -15,7 +15,7 @@ function ControlBar(props) {
 
         (async () => {
 
-            let newConfig = [];
+            newConfig = [];
 
             console.log("UI start rendering.");
 

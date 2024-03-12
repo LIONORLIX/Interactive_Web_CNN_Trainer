@@ -5,14 +5,8 @@
 // https://d3js.org/d3-selection/events
 
 import React, { useState, useEffect, useCallback, Component } from "react"
-import * as tf from '@tensorflow/tfjs';
 import * as d3 from "d3"
 import d3Tip from "d3-tip"
-
-import { MnistData } from '../methods/data.js';
-
-import { createModel } from "../methods/create_model.js"
-import { showExamples, getImageTensor } from '../methods/show_image_data.js'
 
 function Chart(props) {
 
@@ -345,7 +339,7 @@ function Chart(props) {
 
 
     })();
-  }, [props.modelInfo]
+  }, [props.modelInfo, props.epoch]
   )
 
   return (
