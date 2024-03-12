@@ -9,7 +9,7 @@
 
 import * as tf from '@tensorflow/tfjs';
 
-export async function loadModel(model, inputDataUnreshaped) {
+export async function loadModelData(model, inputDataUnreshaped) {
 
     let layerJSON = [];
     let neuronJSON = [];
@@ -21,7 +21,7 @@ export async function loadModel(model, inputDataUnreshaped) {
     let prevNeuronCount = 1;
     let neuronCount = -1;
 
-    let sizeCnt = 0;
+    let sizeCnt = 28;
     // let convCnt = 0;
     // let poolingCnt = 0;
     // let flattenCnt = 0;
@@ -46,6 +46,9 @@ export async function loadModel(model, inputDataUnreshaped) {
 
         // turn tensor to array
         let layerTensorValue = await internalImageTensor.array();
+        
+        let layerWeights;
+        let layerBias;
 
         // console.log(layerTensorValue);
 
@@ -53,18 +56,22 @@ export async function loadModel(model, inputDataUnreshaped) {
 
             layerConv2DCnt += 1;
             neuronCount = layer.filters;
-            sizeCnt += layer.input.shape[1];
+            layerWeights = await layer.getWeights()[0].array();
+            layerBias = await layer.getWeights()[1].array();
+            // sizeCnt += layerTensorValue[0].length;
 
         } else if (layerType == 'MaxPooling2D') {
 
             layerPoolingCnt += 1;
-            sizeCnt += layer.input.shape[1];
+            // sizeCnt += layerTensorValue[0].length;
+            // console.log("this is " + layerTensorValue[0].length)
 
         } else if (layerType == 'Dense') {
 
+
             layerDenseCnt += 1;
             sizeCnt += 2;
-            neuronCount = layerTensorValue[0].length
+            // neuronCount = layerTensorValue[0].length
         }
 
 
@@ -73,7 +80,16 @@ export async function loadModel(model, inputDataUnreshaped) {
             let tensorValue2D = [];
             let tensorValue1D = [];
 
-            if (layerType == 'Dense'){
+            if (layerType == 'Flatten'){
+                // for (let x = 0; x < layerTensorValue[0].length; x++) {
+                //     tensorValue2D.push([]);
+                //     for (let y = 0; y < layerTensorValue[0][x].length; y++) {
+                //         tensorValue2D[x].push(layerTensorValue[0][x][y][i]);
+                //         tensorValue1D.push(layerTensorValue[0][x][y][i]);
+                //     }
+                // }
+                continue;
+            }else if (layerType == 'Dense'){
                 
                 for (let x = 0; x < 1; x++) {
                     tensorValue2D.push([]);
@@ -109,7 +125,8 @@ export async function loadModel(model, inputDataUnreshaped) {
                 'tensor2D': tensorValue2D,
                 'tensor1D': tensorValue1D,
                 'prevNeuronCount': prevNeuronCount,
-                'weights':model.getWeights()[i],
+                'weights':layerWeights,
+                'bias': layerBias
             })
         }
         prevNeuronCount = neuronCount;
@@ -144,6 +161,19 @@ export async function loadModel(model, inputDataUnreshaped) {
                 'layerConv2DCnt': layerConv2DCnt,
                 'tensor': layerTensorValue
             })
+        }
+
+        if (layerType == 'Conv2D') {
+
+            sizeCnt += layerTensorValue[0].length;
+
+        } else if (layerType == 'MaxPooling2D') {
+            sizeCnt += layerTensorValue[0].length;
+            // console.log("this is " + layerTensorValue[0].length)
+
+        } else if (layerType == 'Dense') {
+
+            neuronCount = layerTensorValue[0].length
         }
 
     };

@@ -1,12 +1,12 @@
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-export async function train(model, data) {
-  const metrics = ['loss', 'val_loss', 'acc', 'val_acc'];
-  const container = {
-    name: 'Model Training', tab: 'Model', styles: { height: '1000px' }
-  };
-  const fitCallbacks = tfvis.show.fitCallbacks(container, metrics);
+export async function train(model, data, setEpoch) {
+  // const metrics = ['loss', 'val_loss', 'acc', 'val_acc'];
+  // const container = {
+  //   name: 'Model Training', tab: 'Model', styles: { height: '1000px' }
+  // };
+  // const fitCallbacks = tfvis.show.fitCallbacks(container, metrics);
 
   const BATCH_SIZE = 512;
   const TRAIN_DATA_SIZE = 5500;
@@ -27,6 +27,15 @@ export async function train(model, data) {
       d.labels
     ];
   });
+
+  const fitCallbacks = {
+    onEpochEnd: async (epoch, logs) => {
+      console.log("Epoch: " + epoch + " Loss: " + logs.loss + " Accuracy: " + logs.acc);
+      setEpoch(epoch); 
+    }
+  };
+
+  console.log("train+1")
 
   return model.fit(trainXs, trainYs, {
     batchSize: BATCH_SIZE,

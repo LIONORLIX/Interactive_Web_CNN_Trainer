@@ -1,95 +1,68 @@
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+
 import React, { useState, useEffect, useLayoutEffect } from "react"
 
 function ControlBar(props) {
+
+    let layerList = [];
+
+    let newConfig = [];
+
+    props.modelConfig.forEach((layer, index) => {
+        newConfig.push(layer)
+        
+        layerList.push(
+            <div key={index}>
+                <div
+                    className="title-button"
+                    onClick={() => {
+                        removeLayer(index)
+                    }}
+                >{layer.layerType}
+                </div>
+                <div
+                    className="title-button"
+                    onClick={() => {
+                        addLayer(index)
+                    }}
+                >ADD
+                </div>
+            </div>
+        );
+    });
+
+    function removeLayer(index){
+        newConfig.splice(index, 1)
+        props.setModelConfig(newConfig)
+    }
+
+    function addLayer(index){
+        newConfig.splice(index, 0, {
+            'layerType': 'Conv2D',
+            'kernelSize': 5,
+            'filters': 8,
+            'strides': 1,
+            'activation': 'relu',
+            'kernelInitializer': 'varianceScaling'
+          })
+        props.setModelConfig(newConfig)
+    }
+
+    function removeLayer(index){
+        newConfig.splice(index, 1)
+        props.setModelConfig(newConfig)
+    }
+
     return (
         <div className="control-bar">
-            <div className="block">
-                <div>
-                    <input type="checkbox" id="cases" value={props.value} checked={props.selectCases} />
-                    <label htmlFor="cases">
-                        <div
-                            className="title-button"
-                            onClick={props.clickEventsCases}
-                        >
-                            <p className="important-font">CASES</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <div className="block">
-                <div>
+            {!props.isTraining && layerList}
+            <div className="title-button"
+                onClick={() => {
+                    props.trainingToggle()    
+            }}>
+                Train
 
-                    <input type="checkbox" id="policy" checked={props.selectPolicy} />
-                    <label htmlFor="policy">
-                        <div
-                            className="title-button"
-                            onClick={props.clickEventsPolicy}
-                        >
-                            <p className="important-font">POLICY</p>
-                        </div>
-                    </label>
-                </div>
             </div>
-            <div className="block">
-                <div>
-                    <input type="checkbox" id="gunRate" checked={props.selectGunRate} />
-                    <label htmlFor="gunRate">
-                        <div
-                            className="title-button"
-                            onClick={props.clickEventsGunRate}
-                        >
-                            <p className="important-font">GUN HOLD</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <div className="block">
-                <div>
-                    <input type="checkbox" id="vote" checked={props.selectVote} />
-                    <label htmlFor="vote">
-                        <div
-                            className="title-button"
-                            onClick={props.clickEventsVote}
-                        >
-                            <p className="important-font">VOTE</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            <div className="block tiny-button-container">
-                <div>
-                    <input type="checkbox" id="city" checked={props.selectCity} />
-                    <label htmlFor="city">
-                        <div
-                            id="citylabel"
-                            className={"tiny-button"}
-                            onClick={props.clickEventsCity}
-                        >
-                            <p>CITY</p>
-                        </div>
-                    </label>
-                    <input type="checkbox" id="Uni" checked={props.selectUni} />
-                    <label htmlFor="Uni">
-                        <div
-                            id="Unilabel"
-                            className={"tiny-button"}
-                            onClick={props.clickEventsUni}
-                        >
-                            <p>COLLEGE</p>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
-            {/* <div className="block">
-                <div className="range"> */}
-                    {/* <input type="range" className="" onChange={props.scaleChange} /> */}
-                    {/* <button className="scaleSmall scale" onClick={props.scaleSmall}><img src="./media/small.svg" width="60%"/></button>
-                    <button className="scaleOrigin scale" onClick={props.scaleOrigin}><img src="./media/origin.svg" width="60%"/></button>
-                    <button className="scaleBig scale" onClick={props.scaleBig}><img src="./media/large.svg" width="60%"/></button> */}
-                {/* </div>
-            </div> */}
-
         </div>
     )
 }

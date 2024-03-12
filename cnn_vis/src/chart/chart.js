@@ -6,7 +6,7 @@ import * as tf from '@tensorflow/tfjs';
 import * as d3 from "d3"
 
 import { MnistData } from '../methods/data.js';
-import { loadModel } from "../methods/load_model_data.js"
+
 import { createModel } from "../methods/create_model.js"
 import { showExamples, getImageTensor } from '../methods/show_image_data.js'
 
@@ -14,34 +14,26 @@ function Chart(props) {
 
   const ref = React.useRef(null) // Use React ref to control DOM elements for D3
   // const [layers, setLayers] = useState([]);
-  const [layerData, setLayerData] = useState([]);
-  const [neuronData, setneuronData] = useState([]);
 
   useEffect(() => {
     (async () => {
 
-      const data = new MnistData();
-      await data.load();
-      const inputData = await getImageTensor(data); // Creates a tensor of ones
-
-      const chartOffset = 20;
+      console.log("CHART start rendering.");
+    
+      const chartOffset = 40;
       const pixelSize = 1.5;
-      const neuronHorizontalDis = 60;
-      const neuronVerticalDis = 150;
-      const curveOffset = 50;
+      const neuronHorizontalDis = 70;
+      const neuronVerticalDis = 220;
+      const curveOffset = 100;
 
       console.log("This is value: " + props.testValue);
 
-      const Data = await loadModel(createModel(props.modelConfig), inputData);
-
-      const layerData = Data.layerJSON;
-      const neuronData = Data.neuronJSON;
-      const originalImage = Data.originalImage;
+      const layerData = props.modelInfo.layerJSON;
+      const neuronData = props.modelInfo.neuronJSON;
+      const originalImage = props.modelInfo.originalImage;
 
       console.log(originalImage)
 
-      setLayerData(layerData);
-      setneuronData(neuronData);
       console.log(layerData);
       console.log(neuronData);
       // console.log(neuronData[0]["tensor1D"]);
@@ -57,11 +49,12 @@ function Chart(props) {
 
       const nodes = svg.append("g")
 
+      // draw all the connection lines
       let connection = nodes.selectAll(".connection")
         .data(neuronData)
         .enter()
         .append("g")
-        .attr("class", function (d, i) { return "connection" })
+        .attr("className", function (d, i) { return "connection" })
         .attr("transform", function (d, i) { 
           return "translate(" +  (d.neuronIndex * neuronHorizontalDis + chartOffset + 1 ) + "," + (d.sizeCnt * pixelSize + d.layerConv2DCnt * neuronVerticalDis + d.layerPoolingCnt * neuronVerticalDis/4 + d.layerDenseCnt * neuronVerticalDis + chartOffset ) + ")"; 
         });
@@ -86,9 +79,19 @@ function Chart(props) {
         })
         .enter()
         .append("path")
-        .attr("class", function (d, i) { return "path" })
+        .attr("className", function (d, i) { return "path" })
+        .attr("id", function (d, i){
+          if (d[2]=='Conv2D'){
+            return 'Conv2D'+i
+          }else if(d[2]=='Dense'){ 
+            return 'Dense'+i
+          }else if(d[2]=='MaxPooling2D'){
+            return 'MaxPooling2D'+i
+          }
+          }
+        )
         .join("path")
-        .attr("d", function (d) {
+        .attr("d", function (d,i) {
 
           let x1, y1, x2, y2;
           if (d[2]=='Conv2D' || d[2]=='Dense'){
@@ -96,43 +99,67 @@ function Chart(props) {
             x1 = neuronHorizontalDis * d[0] - neuronHorizontalDis * d[1];
             y2 = 0;
             x2 = 0;
-          }else{
-            y1 = -neuronVerticalDis/4;
-            x1 = 0;
-            y2 = 0;
-            x2 = 0;
-          }
-          return "M " + x1 + " " + y1 + " " 
+            return "M " + x1 + " " + y1 + " " 
           + "C " + (x1) + " " + (y1 + curveOffset) + "," 
           + (x2) + " " + (y2 - curveOffset) + "," 
           + x2 + " " + y2
-
+          }else{
+            if (i==0){
+              y1 = -neuronVerticalDis/4;
+              x1 = 0;
+              y2 = 0;
+              x2 = 0;
+              return "M " + x1 + " " + y1 + " " 
+          + "C " + (x1) + " " + (y1 + curveOffset) + "," 
+          + (x2) + " " + (y2 - curveOffset) + "," 
+          + x2 + " " + y2
+            } 
+          }
         })
-        .attr("stroke-width", 1)
-        .attr("stroke", "rgb(200,200,200)")
+        .attr("stroke-width", 0.4)
+        .attr("stroke", "rgb(122,122,122)")
         .attr("fill", "transparent")
 
+      // draw the first input neuron
       let originalNeuron = nodes
         .append("g")
-        .attr("class", "origin")
+        .attr("className", "origin")
         .attr("transform", 
           "translate(" + chartOffset + "," + chartOffset + ")"
         )
+      
+      let originalNeuronPoint = originalNeuron
+      .append("circle")
+      .attr("className", "circle")
+      .attr('r','5px')
+      .attr("cx", 0)
+      .attr("cy", 28*pixelSize)
+      .attr("fill", "white")
+
+      let originalNeuronOutline = originalNeuron
+      .append("rect")
+      .attr("className", "rect")
+      .attr("width",function(d){return 28*pixelSize+2})
+      .attr("height",function(d){return 28*pixelSize+2})
+      .attr("x", -1)
+      .attr("y", -1)
+      .attr("fill", "white")
 
       let originalRow = originalNeuron.selectAll(".row")
         .data(originalImage[0])
         .enter()
         .append("g")
-        .attr("class", "row")
+        .attr("className", "row")
         .attr("transform", function (d, i) { 
           // console("hhhhh")
           return "translate(0," + i * pixelSize + ")"; });
+        
 
       let originalPixel = originalRow.selectAll(".pixel")
         .data(function (d, i) { return d })
         .enter()
         .append("rect")
-        .attr("class", "pixel")
+        .attr("className", "pixel")
         .attr("x", function (d, i) {
           return i * pixelSize;
         })
@@ -140,28 +167,55 @@ function Chart(props) {
         .attr("height", pixelSize)
         .attr("fill", function (d) { return "rgb(" + d * 255 + "," + d * 255 + "," + d * 255 + ")"; });
 
+      // draw all the neurons in each layer
 
       let neuron = nodes.selectAll(".neuron")
         .data(neuronData)
         .enter()
         .append("g")
-        .attr("class", function (d, i) { return "neuron" })
+        .attr("className", "neuron")
+        .attr("id", function (d, i) { return "neuron" + i })
         .attr("transform", function (d, i) { 
-          return "translate(" + (d.neuronIndex * neuronHorizontalDis + chartOffset) + "," + (d.sizeCnt*pixelSize + d.layerConv2DCnt * neuronVerticalDis + d.layerPoolingCnt * neuronVerticalDis/4 + d.layerDenseCnt * neuronVerticalDis + chartOffset) + ")";
+          return "translate(" + (d.neuronIndex * neuronHorizontalDis + chartOffset) + "," + (d.sizeCnt * pixelSize + d.layerConv2DCnt * neuronVerticalDis + d.layerPoolingCnt * neuronVerticalDis/4 + d.layerDenseCnt * neuronVerticalDis + chartOffset) + ")";
         })
+
+      let neuronPointUp = neuron
+      .append("circle")
+      .attr("className", "circle")
+      .attr('r','5px')
+      .attr("cx", 0)
+      .attr("cy", 0)
+      .attr("fill", "white")
+
+      let neuronPointDown = neuron
+      .append("circle")
+      .attr("className", "circle")
+      .attr('r','4px')
+      .attr("cx", 0)
+      .attr("cy", function(d){return d.tensor2D.length*pixelSize})
+      .attr("fill", "white")
+
+      let neuronPointOutline = neuron
+      .append("rect")
+      .attr("className", "rect")
+      .attr("width",function(d){return d.tensor2D.length*pixelSize+2})
+      .attr("height",function(d){return d.tensor2D.length*pixelSize+2})
+      .attr("x", -1)
+      .attr("y", -1)
+      .attr("fill", "white")
 
       let row = neuron.selectAll(".row")
         .data(function (d) { return d.tensor2D })
         .enter()
         .append("g")
-        .attr("class", "row")
+        .attr("className", "row")
         .attr("transform", function (d, i) { return "translate(0," + i * pixelSize + ")"; });
 
       let pixel = row.selectAll(".pixel")
         .data(function (d, i) { return d })
         .enter()
         .append("rect")
-        .attr("class", "pixel")
+        .attr("className", "pixel")
         .attr("x", function (d, i) {
           return i * pixelSize;
         })
@@ -169,13 +223,15 @@ function Chart(props) {
         .attr("height", pixelSize)
         .attr("fill", function (d) { return "rgb(" + d * 255 + "," + d * 255 + "," + d * 255 + ")"; });
 
+        console.log("CHART rendered.");
+
 
     })();
-  }, [props.testValue, props.modelConfig]
+  }, [props.modelInfo]
   )
 
   return (
-    <div class={'chart-container'} ref={ref}></div>
+    <div className={'chart-container'} ref={ref}></div>
   )
 }
 

@@ -29,11 +29,13 @@ export function createModel(modelConfig) {
           kernelInitializer: modelConfig[i].kernelInitializer
         }));
       }
-    }else if(modelConfig[i].layerType == 'MaxPooling2D'){
-      model.add(tf.layers.maxPooling2d({ 
-        poolSize: modelConfig[i].poolSize, 
-        strides: modelConfig[i].strides 
-      }));
+
+      if (modelConfig[i].isMaxPooling){
+        model.add(tf.layers.maxPooling2d({ 
+          poolSize: modelConfig[i].poolSize, 
+          strides: modelConfig[i].strides 
+        }));
+      }
     }
   }
 
