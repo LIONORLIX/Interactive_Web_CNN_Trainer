@@ -14,8 +14,8 @@ import './ui.css';
 
 import Chart from './chart/chart.js'
 
-import ControlBar from './UI/ControlBar'
-import ChangeImage from './UI/ChangeImage'
+import ControlBar from './UI/ControlBar.js'
+import ChangeImage from './UI/ChangeImage.js'
 
 import { MnistData } from './methods/data.js';
 import { createModel } from './methods/create_model.js'
