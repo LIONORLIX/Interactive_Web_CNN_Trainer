@@ -78,7 +78,7 @@ function Chart(props) {
           let htmlContent = "<div class='tip'>"
           
           htmlContent += "<div class='tip-title'>"
-          htmlContent += neuronData.layerName + " - " + "Neuron#" + neuronData.neuronIndex
+          htmlContent += neuronData.layerName + " - #" + neuronData.neuronIndex
           htmlContent += "</div>"
           
 

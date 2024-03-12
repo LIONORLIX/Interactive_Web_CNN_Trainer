@@ -3,67 +3,129 @@
     /* overflow: scroll; */
 }
 
-.root{
+.root {
     overflow: scroll;
     z-index: -2;
 }
 
+
 .control-bar {
     display: inline-block;
-    background-color:#000000;
-    padding: 2%;
+    background-color: #000000;
+    padding: 2vh;
     text-align: center;
     border-right: 2px solid #494949;
     /* border-radius: 32.0px; */
-    height: 100%;
-    width: 16%;
-    position: fixed;
-    /* min-width:210px; */
-    top: 0;
-    left: 0;
     /* max-width:315px; */
     /* z-index: -1; */
     color: #494949;
 }
 
-.control-bar:hover{
+.upper-bar {
+    height: 86vh;
+    width: 16%;
+    position: fixed;
+    /* min-width:210px; */
+    top: 0;
+    left: 0;
+    overflow: scroll;
+}
+
+.lower-bar {
+    height: 6vh;
+    width: 16%;
+    position: fixed;
+    border-top: 1px solid #494949;
+    /* min-width:210px; */
+    bottom: 0;
+    left: 0;
+}
+
+.bar-title {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 2vh;
+}
+
+.operation-container {
+    display: inline-block;
+    width: 90%;
+    /* height:2.7vh; */
+    border: #494949 1px solid;
+    border-radius: 16px;
+    background-color: #000000;
+    text-align: left;
+    padding: 0.7rem;
+    margin-top: 0.7rem;
+    margin-bottom: 0.7rem;
+}
+
+.control-bar:hover {
     /* box-shadow: 0 0 4px 2px rgba(100, 100, 100, 0.2); */
 }
 
 .title-button {
     display: inline-block;
-    width:90%;
+    width: 88%;
     /* height:2.7vh; */
     border: #494949 1px solid;
     border-radius: 12px;
     background-color: #000000;
     text-align: left;
-    padding: 0.7rem;
+    padding: 5%;
+    /* margin-top: 0.7rem; */
     margin-bottom: 0.7rem;
+    transition: 300ms;
 }
 
-.title-button:hover{
+.add-button {
+    font-size: 6px;
+    border: 0px;
+    padding: 0px;
+    /* margin-top: 0.1rem; */
+    margin-bottom: 0px;
+    transition: 300ms;
+    /* text-align: center; */
+}
+
+.add-button:hover {
+    font-size: 6px;
+    border: 0px;
+    padding: 0.7rem;
+    /* margin-top: 0.7rem; */
+    /* margin-bottom: 0.7rem; */
+    transition: 300ms;
+    cursor: pointer;
+}
+
+.title-button:hover {
     background-color: #c1c1c1;
+    transition: 300ms;
+    cursor: pointer;
     /* box-shadow: 0 0 4px 2px rgba(100, 100, 100, 0.2); */
 }
 
-.title-button:active{
+.title-button:active {
     background-color: #878787;
 }
 
-/* svg {
-    width: 100vw;
-    height: 100vh;
-    overflow: scroll;
-} */
+.train-button {
+    /* position: absolute; */
+    /* bottom: 5vh; */
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    border: #494949 2px solid;
+}
 
-.d3-tip{
+.d3-tip {
     /* position: absolute!important;
     right: 0!important;
     top: 0!important; */
 }
 
-.tip{
+.tip {
     background-color: rgba(0, 0, 0, 0);
     /* background-color: #878787; */
     /* position: absolute;
@@ -78,20 +140,20 @@
     border: #494949 1px solid;
 }
 
-.tip-title{
+.tip-title {
     font-weight: bold;
     font-size: 16px;
     padding-bottom: 6px;
 }
 
-.tip-line{
+.tip-line {
     display: inline-block;
     padding-top: 4px;
     padding-right: 10px;
     padding-bottom: 2px;
 }
 
-.tip-windows{
+.tip-windows {
     background-color: rgba(0, 0, 0, 0);
     /* background-color: #878787; */
     /* position: absolute;
@@ -103,13 +165,13 @@
     border: #1f1f1f 1px solid;
 }
 
-.tip-row{
+.tip-row {
     background-color: rgba(0, 0, 0, 0);
     display: block;
     height: 15px;
 }
 
-.tip-pixel{
+.tip-pixel {
     background-color: rgba(0, 0, 0, 0);
     display: inline-block;
     width: 32px;
@@ -119,11 +181,11 @@
     /* border: #1f1f1f 1px solid; */
 }
 
-.zero{
-    color: rgb(79, 79, 79)!important;
+.zero {
+    color: rgb(79, 79, 79) !important;
 }
 
-.chart-container{
+.chart-container {
     display: inline-block;
     position: relative;
     left: 20%;
@@ -131,7 +193,7 @@
     height: 150vh;
 }
 
-#chart{
+#chart {
     /* position: relative; */
     /* width: 100%;
     height: 100%; */
@@ -143,10 +205,10 @@
 
 } */
 
-.path{
+.path {
     z-index: -1;
 }
 
-.neuron{
+.neuron {
     z-index: 99 !important;
 }

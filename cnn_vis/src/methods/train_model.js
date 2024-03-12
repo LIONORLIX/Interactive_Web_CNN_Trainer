@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-export async function train(model, data, setEpoch) {
+export async function train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs) {
   // const metrics = ['loss', 'val_loss', 'acc', 'val_acc'];
   // const container = {
   //   name: 'Model Training', tab: 'Model', styles: { height: '1000px' }
@@ -31,7 +31,21 @@ export async function train(model, data, setEpoch) {
   const fitCallbacks = {
     onEpochEnd: async (epoch, logs) => {
       console.log("Epoch: " + epoch + " Loss: " + logs.loss + " Accuracy: " + logs.acc);
-      setEpoch(epoch); 
+
+      let updateLogs = trainingLogs
+
+      let newLog = []
+      newLog.push(epoch)
+      newLog.push(logs.loss)
+      newLog.push(logs.acc)
+
+      updateLogs.push(newLog)
+
+      setTrainingLogs(updateLogs)
+      setEpoch(epoch)
+      if (epoch == 9){
+        setIsTrainingDone(true);
+      }
     }
   };
 

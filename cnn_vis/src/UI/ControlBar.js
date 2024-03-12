@@ -5,42 +5,78 @@ import React, { useState, useEffect, useLayoutEffect } from "react"
 
 function ControlBar(props) {
 
-    let layerList = [];
+    const [layerList, setLayerList] = useState([]);
+    const [logList, setLogList] = useState([]);
 
     let newConfig = [];
 
     // const [value, setValue] = useState(0);
+    useEffect(() => {
 
-    props.modelConfig.forEach((layer, index) => {
-        newConfig.push(layer)
+        (async () => {
 
-        layerList.push(
-            <div key={index}>
-                <div
-                >
-                    <div
-                    className="title-button"
-                    onClick={() => {
-                        removeLayer(index)
-                    }}
-                    >{layer.layerType}
-                    </div>
-                        <input type="range" min="4" max="16" 
-                        onChange={(e) => setFilter(index,e.target.value)}
-                        value={layer.filters}
-                        />
-                </div>
+            let newConfig = [];
 
-                <div
-                    className="title-button add-button"
-                    onClick={() => {
-                        addLayer(index)
-                    }}
-                >ADD
-                </div>
-            </div>
-        );
-    });
+            console.log("UI start rendering.");
+
+            if (!props.isTraining){
+
+                let newLayerList = [];
+                newConfig = [];
+
+                console.log("untrained")
+                props.modelConfig.forEach((layer, index) => {
+                    newConfig.push(layer)
+                    newLayerList.push(
+                        <div key={index}>
+                            <div
+                                className="operation-container"
+                            >
+                                <div
+                                    className="title-button"
+                                    onClick={() => {
+                                        removeLayer(index)
+                                    }}
+                                >{layer.layerType}
+                                </div>
+                                Filters <input type="range" min="4" max="16"
+                                    onChange={(e) => setFilter(index, e.target.value)}
+                                    value={layer.filters}
+                                />
+                            </div>
+                            {props.modelConfig.length <= 5 && (
+                                <div
+                                    className="title-button add-button"
+                                    onClick={() => {
+                                        addLayer(index)
+                                    }}
+                                >ADD CONV LAYER
+                                </div>)
+                            }
+                        </div>
+                    );
+                });
+                setLayerList(newLayerList);
+                console.log(newLayerList);
+            }else{
+
+                let newLogList = [];
+
+                props.trainingLogs.forEach((log, index) => {
+                    newLogList.push(
+                        <div key={index}>
+                            {"Epoch: " + log[0] + "Loss: " + log[1] + "Accuracy: " + log[2]}
+                        </div>
+                    );
+                })   
+                setLogList(newLogList); 
+                console.log(newLogList);
+            }
+
+            console.log("UI rendered.");
+        })();
+
+    }, [props.modelConfig, props.epoch, props.isTrainingDone]);
 
     function removeLayer(index) {
         newConfig.splice(index, 1)
@@ -70,14 +106,26 @@ function ControlBar(props) {
     }
 
     return (
-        <div className="control-bar">
-            {!props.isTraining && layerList}
-            <div className="title-button"
-                onClick={() => {
-                    props.trainingToggle()
-                }}>
-                Train
+        <div>
+            <div className="control-bar upper-bar">
+                <div className="bar-title">
+                    {!props.isTraining && "Configure your CNN model"}
+                    {props.isTraining && !props.isTrainingDone && "Your model is under training..."}
+                    {props.isTraining && props.isTrainingDone && "Training is finished"}
 
+                </div>
+                {!props.isTraining && layerList}
+                {props.isTraining && logList}
+            </div>
+            <div className="control-bar lower-bar">
+                <div className="title-button train-button"
+                    onClick={() => {
+                        props.trainingToggle()
+                    }}>
+                    {!props.isTraining && "START TRAINING"}
+                    {props.isTraining && !props.isTrainingDone && "CANCEL TRAINING"}
+                    {props.isTraining && props.isTrainingDone && "CONFIGURE AGAIN"}
+                </div>
             </div>
         </div>
     )

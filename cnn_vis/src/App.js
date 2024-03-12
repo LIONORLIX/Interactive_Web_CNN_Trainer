@@ -23,8 +23,10 @@ import { test } from './methods/smallTest.js'
 function App() {
 
   const [imageData, setImageData] = useState([]);
-  
-  const [isTraining, setIsTraining] = useState(false); 
+
+  const [isTraining, setIsTraining] = useState(false);
+  const [isTrainingDone, setIsTrainingDone] = useState(false);
+  const [trainingLogs, setTrainingLogs] = useState([]);
 
   const [modelConfig, setModelConfig] = useState([{
     'layerType': 'Conv2D',
@@ -52,12 +54,7 @@ function App() {
     'activation': 'relu',
     'kernelInitializer': 'varianceScaling',
     'isMaxPooling': true
-  },
-  // {
-  //   'layerType': 'MaxPooling2D',
-  //   'poolSize': [2, 2],
-  //   'strides': [2, 2]
-  // }
+  }
   ]);
 
   const [model, setModel] = useState(null);
@@ -66,13 +63,7 @@ function App() {
 
   const [modelInfo, setModelInfo] = useState(null);
 
-  // const updateModel = (updatedModel)=>{
-  //   console.log("haha")
-  //   setModel(updatedModel)
-  // }
-
-  // setModelConfig(model);
-
+  // This part set and train the model
   useEffect(() => {
 
     (async () => {
@@ -81,24 +72,20 @@ function App() {
 
       const data = new MnistData();
       await data.load();
-      
-      if (!isTraining){
+
+      if (!isTraining) {
         let newModel = createModel(modelConfig)
         setModel(newModel);
-      }else{
-        await train(model, data, setEpoch);
+      } else {
+        await train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs);
       }
-
-      // await showExamples(data);
-      // tfvis.show.modelSummary({ name: 'Model Architecture', tab: 'Model' }, model);
-      // await train(model, data);
-      // test(data);
-      
       console.log("APP part1 rendered.");
 
     })();
 
   }, [modelConfig, isTraining]);
+
+  // This part get the data of model and pass to the CHART
 
   useEffect(() => {
 
@@ -110,7 +97,7 @@ function App() {
       await data.load();
 
       if (model) {
-        const inputData = await getImageTensor(data); // Creates a tensor of ones
+        const inputData = await getImageTensor(data);
         const newModelInfo = await loadModelData(model, inputData);
         setModelInfo(newModelInfo);
         console.log(modelConfig)
@@ -120,12 +107,12 @@ function App() {
 
     })();
 
-  }, [model, epoch]);
+  }, [model, isTrainingDone]);
 
-  function trainingToggle(){
+  function trainingToggle() {
     let newTraining = !isTraining;
     setIsTraining(newTraining)
-    console.log('isTraining: '+ newTraining)
+    console.log('isTraining: ' + newTraining)
   }
 
   return (
@@ -133,14 +120,16 @@ function App() {
       {modelInfo && (
         <Chart
           modelInfo={modelInfo}
-          // modelConfig = {modelConfig}
         />
       )}
       <ControlBar
-        modelConfig = {modelConfig}
-        setModelConfig = {setModelConfig}
-        trainingToggle = {trainingToggle}
-        isTraining = {isTraining}
+        modelConfig={modelConfig}
+        setModelConfig={setModelConfig}
+        trainingToggle={trainingToggle}
+        isTraining={isTraining}
+        isTrainingDone={isTrainingDone}
+        trainingLogs={trainingLogs}
+        epoch={epoch}
       />
     </div>
   );
