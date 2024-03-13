@@ -6,8 +6,8 @@
 }
 
 .tip {
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter:blur(5px);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter:blur(10px);
     /* background-color: #878787; */
     /* position: absolute;
     right: 0;
@@ -94,8 +94,8 @@
 }
 
 .prediction-container {
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter:blur(5px);
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter:blur(10px);
     position: fixed;
     top: 5vh;
     right: 5vh;

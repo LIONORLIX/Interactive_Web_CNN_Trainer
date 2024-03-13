@@ -146,7 +146,12 @@ function App() {
   }, [model, isTrainingDone, data, inputData]);
 
   function trainingToggle() {
+    if (isTraining){
+      let newIsTrainingDone = false;
+      setIsTrainingDone(newIsTrainingDone)
+    }
     let newTraining = !isTraining;
+
     setIsTraining(newTraining)
     console.log('isTraining: ' + newTraining)
   }

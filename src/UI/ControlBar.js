@@ -19,7 +19,7 @@ function ControlBar(props) {
 
             console.log("UI start rendering.");
 
-            if (!props.isTraining){
+            if (!props.isTraining) {
 
                 let newLayerList = [];
                 newConfig = [];
@@ -28,29 +28,35 @@ function ControlBar(props) {
                 props.modelConfig.forEach((layer, index) => {
                     newConfig.push(layer)
                     newLayerList.push(
-                        <div key={index}>
-                            <div
-                                className="operation-container"
-                            >
-                                <div
-                                    className="title-button"
-                                    onClick={() => {
-                                        removeLayer(index)
-                                    }}
-                                >{layer.layerType}
+                        <div key={index} className="ui-container">
+                            <div className="operation-container">
+
+                                <div className="container-title">{layer.layerType}</div>
+                                <div className="title-container">
+                                    <div>Filter Number: {layer.filters}</div>
+                                    <input type="range" min="4" max="16"
+                                        onChange={(e) => setFilter(index, e.target.value)}
+                                        value={layer.filters} />
                                 </div>
-                                Filters <input type="range" min="4" max="16"
-                                    onChange={(e) => setFilter(index, e.target.value)}
-                                    value={layer.filters}
-                                />
+                                <div className="title-container">
+                                    <div>Kernel Size: {layer.filters}</div>
+                                    <input type="range" min="4" max="16"
+                                        onChange={(e) => setFilter(index, e.target.value)}
+                                        value={layer.filters} />
+                                </div>
+                                <div className="title-button"
+                                    onClick={() => { removeLayer(index) }}>
+                                    Add Max Pooling
+                                </div>
+                                <div className="title-button"
+                                    onClick={() => { removeLayer(index) }}>
+                                    Remove This Layer
+                                </div>
                             </div>
                             {props.modelConfig.length <= 5 && (
-                                <div
-                                    className="title-button add-button"
-                                    onClick={() => {
-                                        addLayer(index)
-                                    }}
-                                >ADD CONV LAYER
+                                <div className="title-button add-button"
+                                    onClick={() => { addLayer(index) }}>
+                                    ADD CONV LAYER
                                 </div>)
                             }
                         </div>
@@ -58,18 +64,18 @@ function ControlBar(props) {
                 });
                 setLayerList(newLayerList);
                 console.log(newLayerList);
-            }else{
+            } else {
 
                 let newLogList = [];
 
                 props.trainingLogs.forEach((log, index) => {
                     newLogList.push(
-                        <div key={index}>
+                        <div key={index} className="ui-container">
                             {"Epoch: " + log[0] + "Loss: " + log[1] + "Accuracy: " + log[2]}
                         </div>
                     );
-                })   
-                setLogList(newLogList); 
+                })
+                setLogList(newLogList);
                 console.log(newLogList);
             }
 
@@ -109,15 +115,27 @@ function ControlBar(props) {
         <div>
             <div className="control-bar upper-bar">
                 <div className="bar-title">
-                    {!props.isTraining && "Configure your CNN model"}
-                    {props.isTraining && !props.isTrainingDone && "Your model is under training..."}
-                    {props.isTraining && props.isTrainingDone && "Training is finished"}
+                    <p>
+                        {!props.isTraining && "STEP01"}
+                        {props.isTraining && !props.isTrainingDone && "STEP02"}
+                        {props.isTraining && props.isTrainingDone && "STEP03"}
+                    </p>
+                    <p>
+                        {!props.isTraining && "Configure your CNN model and training"}
+                        {props.isTraining && !props.isTrainingDone && "Wait for training..."}
+                        {props.isTraining && props.isTrainingDone && "Training is finished, change input digit to check the result"}
+                    </p>
 
                 </div>
                 {!props.isTraining && layerList}
                 {props.isTraining && logList}
             </div>
             <div className="control-bar lower-bar">
+                <div className="title-container">
+                    <div>Epoch: {1}</div>
+                    <input type="range" min="4" max="16"/>
+                        
+                </div>
                 <div className="title-button train-button"
                     onClick={() => {
                         props.trainingToggle()
@@ -130,6 +148,5 @@ function ControlBar(props) {
         </div>
     )
 }
-
 
 export default ControlBar
