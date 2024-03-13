@@ -44,9 +44,8 @@ function Chart(props) {
       const svg = svgContainer
         .append("svg")
         .attr("id", "chart")
-        .attr("height", window.innerHeight*2)
-        .attr("width", window.innerWidth)
-        
+        .attr("height", (neuronVerticalDis + pixelSize*28)*(layerData.length-1)+chartOffset+10)
+        .attr("width", 70*(16)+chartOffset)
         // .attr("viewBox", "0 0 1000 1000")
 
       const nodes = svg.append("g")
@@ -55,15 +54,13 @@ function Chart(props) {
         .attr('class', 'd3-tip')
         .offset(function (d, neuronData) { 
 
+          console.log(neuronData)
+
           const [x, y] = d3.pointer(window.event, nodes);
           let direction = -1;
           if (x < window.innerWidth/2){
-            // console.log(window.innerWidth + " win")
-            // console.log(x + "x1")
             direction = 1;
           }else{
-            // console.log(window.innerWidth + " win")
-            // console.log(x + "x2")
             direction = -1;
           }
           return [15*(neuronData.tensor2D.length+8), direction*15*neuronData.tensor2D.length]
@@ -142,13 +139,6 @@ function Chart(props) {
           for (let i=0; i<originalImage[0].length; i++){
             htmlContent += "<div class='tip-row'>"
             for (let j=0; j<originalImage[0].length; j++){
-              // htmlContent += "<div class='tip-pixel'>"
-              // if (originalImage[0][i][j]==0.0){
-              //   // htmlContent += "<div class='tip-pixel zero'>"
-              //   htmlContent += 0
-              // }else{
-              //   htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
-              // }
               if (originalImage[0][i][j]==0.0){
                 htmlContent += "<div class='tip-pixel zero'>"
                 htmlContent += 0
@@ -181,6 +171,89 @@ function Chart(props) {
         // .attr("y", 0)
 
       nodes.call(originalNeuronTip);
+
+      const weightTip = d3Tip()
+        .attr('class', 'd3-tip')
+        .offset(function (d, neuronData) { 
+          // return [0,0]
+          if (neuronData[3]){
+          const [x, y] = d3.pointer(window.event, nodes);
+          let direction = -1;
+          if (x < window.innerWidth/2){
+            direction = 1;
+          }else{
+            direction = -1;
+          }
+          return [15*(neuronData[3].length+8), direction*15*neuronData[3].length]
+        }else{
+          return [0,0]
+        }
+        } )
+        .html(function (d, neuronData) {
+          console.log(neuronData)
+          if (neuronData[3]){
+          
+          // let htmlContent = "hi"
+          let htmlContent = "<div class='tip'>"
+          
+          htmlContent += "<div class='tip-title'>"
+          htmlContent += "Conv2D Kernel" + " - #" + neuronData[0] + "," +neuronData[1]
+          htmlContent += "</div>"
+
+          htmlContent += "<div class='tip-windows'>"
+          for (let i=0; i<neuronData[3].length; i++){
+            htmlContent += "<div class='tip-row'>"
+            for (let j=0; j<neuronData[3].length; j++){
+              console.log(neuronData[3][i][j][neuronData[0]][neuronData[1]])
+              if (neuronData[3][i][j][neuronData[0]][neuronData[1]]==0.0){
+                htmlContent += "<div class='tip-pixel zero'>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }else if(neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000<=200.0){
+                htmlContent += "<div class='tip-pixel one'>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }else if(neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000<=400.0){
+                htmlContent += "<div class='tip-pixel two'>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }else if(neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000<=600.0){
+                htmlContent += "<div class='tip-pixel three'>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }else if(neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000<=800.0){
+                htmlContent += "<div class='tip-pixel four'>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }else{
+                htmlContent += "<div class='tip-pixel' five>"
+                htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]]*1000.0).toFixed(0)
+              }
+              htmlContent += "</div>"
+            }
+            htmlContent += "</div>"
+          }
+          htmlContent += "</div>"
+
+          htmlContent += "<div class='tip-info'>"
+          if (neuronData.activation != undefined){
+            htmlContent += "<div class='tip-line'>"
+            htmlContent += "Activation - "+neuronData.activation.constructor.className
+            htmlContent += "</div>"
+          }
+          if (neuronData.bias != undefined){
+            htmlContent += "<div class='tip-line'>"
+            htmlContent += "Bia - "+neuronData.bias[neuronData.neuronIndex]
+            htmlContent += "</div>"
+          }
+          htmlContent += "</div>"
+
+          htmlContent += "</div>"
+
+          return htmlContent
+        }else{
+          return null
+        }
+        })
+        // .attr("x", 0)
+        // .attr("y", 0)
+
+      nodes.call(weightTip);
       
 
       // draw all the connection lines
@@ -203,6 +276,7 @@ function Chart(props) {
             info_array.push(num);
             info_array.push(d.neuronIndex);
             info_array.push(d.layerType);
+            info_array.push(d.weights);
 
             formerNeurons.push(info_array);
             info_array = [];
@@ -249,9 +323,18 @@ function Chart(props) {
             } 
           }
         })
-        .attr("stroke-width", 0.4)
-        .attr("stroke", "rgb(122,122,122,122)")
+        .attr("stroke-width", 0.6)
+        .attr("stroke", "rgb(80,80,80)")
         .attr("fill", "transparent")
+        .on('mouseover', weightTip.show)
+        .on('mouseout', weightTip.hide)
+        .on("mouseenter", function(d) {
+          d3.select(this).attr("stroke", "rgb(255,255,255)").attr("stroke-width", 1);
+        })                  
+        .on("mouseleave", function(d) {
+          d3.select(this).attr("stroke", "rgb(80,80,80)").attr("stroke-width", 0.6);
+        });
+        
 
       // draw the first input neuron
       let originalNeuron = nodes
@@ -322,7 +405,11 @@ function Chart(props) {
       .attr("className", "circle")
       .attr('r',function (d, i) { 
         if (d.bias == undefined){
-          return "0px"
+          if (d.layerType=="Dense"){
+            return "8px"
+          }else{
+            return "0px"
+          }
         }else{
           return (initialNeuronSize+d.bias[d.neuronIndex]*250)+"px" 
         }
@@ -371,7 +458,7 @@ function Chart(props) {
 
 
     })();
-  }, [props.modelInfo, props.epoch]
+  }, [props.modelInfo]
   )
 
   return (

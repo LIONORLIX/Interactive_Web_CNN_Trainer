@@ -94,7 +94,7 @@
     position: relative;
     left: 20%;
     width: 80vw;
-    height: 150vh;
+    height: 100vh;
 }
 
 #chart {
@@ -107,6 +107,12 @@
 
 .path {
     z-index: -1;
+
+}
+
+.path:hover {
+    stroke: rgb(255, 255, 255)
+
 }
 
 .neuron {
@@ -127,7 +133,7 @@
 
 .prediction-title{
     background-color: rgba(0, 0, 0, 0);
-    text-align: right;
+    text-align: center;
     font-weight: bold;
 }
 

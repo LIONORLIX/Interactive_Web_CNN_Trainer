@@ -50,12 +50,12 @@ function ControlBar(props) {
                                    {!layer.isMaxPooling && "Add Max Pooling"}
                                    {layer.isMaxPooling && "Remove Max Pooling"}
                                 </div>
-                                <div className="title-button"
+                                {props.modelConfig.length > 1 && (<div className="title-button"
                                     onClick={() => { removeLayer(index) }}>
                                     Remove This Layer
-                                </div>
+                                </div>)}
                             </div>
-                            {props.modelConfig.length <= 5 && (
+                            {props.modelConfig.length <= 4 && (
                                 <div className="title-button add-button"
                                     onClick={() => { addLayer(index) }}>
                                     ADD CONV LAYER
