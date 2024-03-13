@@ -1,5 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
 // https://dev.to/diballesteros/how-to-make-a-simple-slider-component-in-react-3nk8
+// https://stackoverflow.com/questions/32682962/javascript-loop-through-array-backwards-with-foreach
 
 import React, { useState, useEffect, useLayoutEffect } from "react"
 
@@ -31,22 +32,23 @@ function ControlBar(props) {
                         <div key={index} className="ui-container">
                             <div className="operation-container">
 
-                                <div className="container-title">{layer.layerType}</div>
+                                <div className="container-title">{layer.layerType}{" - "+index}</div>
                                 <div className="title-container">
                                     <div>Filter Number: {layer.filters}</div>
                                     <input type="range" min="4" max="16"
-                                        onChange={(e) => setFilter(index, e.target.value)}
+                                        onChange={(e) => modifyFilter(index, e.target.value)}
                                         value={layer.filters} />
                                 </div>
                                 <div className="title-container">
-                                    <div>Kernel Size: {layer.filters}</div>
-                                    <input type="range" min="4" max="16"
-                                        onChange={(e) => setFilter(index, e.target.value)}
-                                        value={layer.filters} />
+                                    <div>Kernel Size: {layer.kernelSize}</div>
+                                    <input type="range" min="2" max="5"
+                                        onChange={(e) => modifyKernel(index, e.target.value)}
+                                        value={layer.kernelSize} />
                                 </div>
                                 <div className="title-button"
-                                    onClick={() => { removeLayer(index) }}>
-                                    Add Max Pooling
+                                    onClick={() => { setMaxPooling(index) }}>
+                                   {!layer.isMaxPooling && "Add Max Pooling"}
+                                   {layer.isMaxPooling && "Remove Max Pooling"}
                                 </div>
                                 <div className="title-button"
                                     onClick={() => { removeLayer(index) }}>
@@ -68,10 +70,17 @@ function ControlBar(props) {
 
                 let newLogList = [];
 
-                props.trainingLogs.forEach((log, index) => {
+                props.trainingLogs.reverse().forEach((log, index) => {
                     newLogList.push(
                         <div key={index} className="ui-container">
-                            {"Epoch: " + log[0] + "Loss: " + log[1] + "Accuracy: " + log[2]}
+                            
+                            <div className="container-title">
+                                Epoch: {log[0]}
+                            </div>
+                            <div className="title-container">
+                                <p>Loss: {log[1].toFixed(8)}</p>
+                               <p>Accuracy: {log[2].toFixed(8)}</p>
+                            </div>
                         </div>
                     );
                 })
@@ -83,11 +92,6 @@ function ControlBar(props) {
         })();
 
     }, [props.modelConfig, props.epoch, props.isTrainingDone]);
-
-    function removeLayer(index) {
-        newConfig.splice(index, 1)
-        props.setModelConfig(newConfig)
-    }
 
     function addLayer(index) {
         newConfig.splice(index, 0, {
@@ -101,8 +105,18 @@ function ControlBar(props) {
         props.setModelConfig(newConfig)
     }
 
-    function setFilter(index, value) {
+    function modifyFilter(index, value) {
         newConfig[index].filters = parseInt(value)
+        props.setModelConfig(newConfig)
+    }
+
+    function modifyKernel(index, value) {
+        newConfig[index].kernelSize = parseInt(value)
+        props.setModelConfig(newConfig)
+    }
+
+    function setMaxPooling(index){
+        newConfig[index].isMaxPooling = !newConfig[index].isMaxPooling
         props.setModelConfig(newConfig)
     }
 
@@ -132,8 +146,10 @@ function ControlBar(props) {
             </div>
             <div className="control-bar lower-bar">
                 <div className="title-container">
-                    <div>Epoch: {1}</div>
-                    <input type="range" min="4" max="16"/>
+                    <div>Epoch: {props.epochCount}</div>
+                    <input type="range" min="1" max="10"
+                    onChange={(e) => props.setEpochCount(e.target.value)}
+                    value={props.epochCount}/>
                         
                 </div>
                 <div className="title-button train-button"

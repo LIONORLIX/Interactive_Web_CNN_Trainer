@@ -66,7 +66,27 @@
 }
 
 .zero{
-    color: #494949;
+    color: rgba(50, 50, 50);
+}
+
+.one{
+    color: rgba(90, 90, 90);
+}
+
+.two{
+    color: rgba(130, 130, 130);
+}
+
+.three{
+    color: rgba(170, 170, 170);
+}
+
+.four{
+    color: rgba(210, 210, 210);
+}
+
+.five{
+    color: rgba(255, 255, 255);
 }
 
 .chart-container {

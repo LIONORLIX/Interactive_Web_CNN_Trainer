@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs';
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-export async function train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs) {
+export async function train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs, epochCount) {
   // const metrics = ['loss', 'val_loss', 'acc', 'val_acc'];
   // const container = {
   //   name: 'Model Training', tab: 'Model', styles: { height: '1000px' }
@@ -43,7 +43,7 @@ export async function train(model, data, setEpoch, setIsTraining, setIsTrainingD
 
       setTrainingLogs(updateLogs)
       setEpoch(epoch)
-      if (epoch == 9){
+      if (epoch == epochCount-1){
         setIsTrainingDone(true);
       }
     }
@@ -54,7 +54,7 @@ export async function train(model, data, setEpoch, setIsTraining, setIsTrainingD
   return model.fit(trainXs, trainYs, {
     batchSize: BATCH_SIZE,
     validationData: [testXs, testYs],
-    epochs: 10,
+    epochs: epochCount,
     shuffle: true,
     callbacks: fitCallbacks
   });

@@ -167,6 +167,11 @@
     background-color: #c1c1c1;
 }
 
+.title-container p{
+    margin: 0;
+    padding: 2px;
+}
+
 
 input[type=range] {
     height: 23px;

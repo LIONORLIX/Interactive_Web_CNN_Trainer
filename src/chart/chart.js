@@ -83,8 +83,20 @@ function Chart(props) {
               if (neuronData.tensor2D[i][j]==0.0){
                 htmlContent += "<div class='tip-pixel zero'>"
                 htmlContent += 0
+              }else if(neuronData.tensor2D[i][j]*1000<=200.0){
+                htmlContent += "<div class='tip-pixel one'>"
+                htmlContent += (neuronData.tensor2D[i][j]*1000).toFixed(0)
+              }else if(neuronData.tensor2D[i][j]*1000<=400.0){
+                htmlContent += "<div class='tip-pixel two'>"
+                htmlContent += (neuronData.tensor2D[i][j]*1000).toFixed(0)
+              }else if(neuronData.tensor2D[i][j]*1000<=600.0){
+                htmlContent += "<div class='tip-pixel three'>"
+                htmlContent += (neuronData.tensor2D[i][j]*1000).toFixed(0)
+              }else if(neuronData.tensor2D[i][j]*1000<=800.0){
+                htmlContent += "<div class='tip-pixel four'>"
+                htmlContent += (neuronData.tensor2D[i][j]*1000).toFixed(0)
               }else{
-                htmlContent += "<div class='tip-pixel'>"
+                htmlContent += "<div class='tip-pixel' five>"
                 htmlContent += (neuronData.tensor2D[i][j]*1000).toFixed(0)
               }
               htmlContent += "</div>"
@@ -130,10 +142,30 @@ function Chart(props) {
           for (let i=0; i<originalImage[0].length; i++){
             htmlContent += "<div class='tip-row'>"
             for (let j=0; j<originalImage[0].length; j++){
-              htmlContent += "<div class='tip-pixel'>"
+              // htmlContent += "<div class='tip-pixel'>"
+              // if (originalImage[0][i][j]==0.0){
+              //   // htmlContent += "<div class='tip-pixel zero'>"
+              //   htmlContent += 0
+              // }else{
+              //   htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
+              // }
               if (originalImage[0][i][j]==0.0){
+                htmlContent += "<div class='tip-pixel zero'>"
                 htmlContent += 0
+              }else if(originalImage[0][i][j]*1000<=200.0){
+                htmlContent += "<div class='tip-pixel one'>"
+                htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
+              }else if(originalImage[0][i][j]*1000<=400.0){
+                htmlContent += "<div class='tip-pixel two'>"
+                htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
+              }else if(originalImage[0][i][j]*1000<=600.0){
+                htmlContent += "<div class='tip-pixel three'>"
+                htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
+              }else if(originalImage[0][i][j]*1000<=800.0){
+                htmlContent += "<div class='tip-pixel four'>"
+                htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
               }else{
+                htmlContent += "<div class='tip-pixel' five>"
                 htmlContent += (originalImage[0][i][j]*1000).toFixed(0)
               }
               htmlContent += "</div>"

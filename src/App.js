@@ -70,6 +70,8 @@ function App() {
 
   const [isChangeImage, setIsChangeImage] = useState(false);
 
+  const [epochCount, setEpochCount] = useState(10);
+
 
   useEffect(() => {
 
@@ -115,7 +117,7 @@ function App() {
         let newModel = createModel(modelConfig)
         setModel(newModel);
       } else {
-        await train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs);
+        await train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs, epochCount);
       }
       console.log("APP part1 rendered.");
     }
@@ -149,6 +151,7 @@ function App() {
     if (isTraining){
       let newIsTrainingDone = false;
       setIsTrainingDone(newIsTrainingDone)
+      setTrainingLogs([])
     }
     let newTraining = !isTraining;
 
@@ -180,6 +183,8 @@ function App() {
         isTrainingDone={isTrainingDone}
         trainingLogs={trainingLogs}
         epoch={epoch}
+        epochCount = {epochCount}
+        setEpochCount = {setEpochCount}
       />
       <ChangeImage
         isChangeImage = {isChangeImage}
