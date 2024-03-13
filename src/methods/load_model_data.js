@@ -68,7 +68,7 @@ export async function loadModelData(model, inputDataUnreshaped) {
 
         } else if (layerType == 'Dense') {
 
-
+            neuronCount = 10;
             layerDenseCnt += 1;
             sizeCnt += 2;
             // neuronCount = layerTensorValue[0].length
@@ -129,6 +129,7 @@ export async function loadModelData(model, inputDataUnreshaped) {
                 'bias': layerBias
             })
         }
+
         prevNeuronCount = neuronCount;
         // layerConv2DCnt += 1;
 

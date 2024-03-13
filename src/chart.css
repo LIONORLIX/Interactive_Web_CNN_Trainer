@@ -2,10 +2,12 @@
     /* position: absolute!important;
     right: 0!important;
     top: 0!important; */
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .tip {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter:blur(5px);
     /* background-color: #878787; */
     /* position: absolute;
     right: 0;
@@ -17,15 +19,18 @@
     z-index: 99;
     padding: 10px;
     border: #494949 1px solid;
+    
 }
 
 .tip-title {
+    background-color: rgba(0, 0, 0, 0);
     font-weight: bold;
     font-size: 16px;
     padding-bottom: 6px;
 }
 
 .tip-line {
+    background-color: rgba(0, 0, 0, 0);
     display: inline-block;
     padding-top: 4px;
     padding-right: 10px;
@@ -39,7 +44,7 @@
     right: 0;
     top: 0; */
     /* width: 30%; */
-    font-size: 1px !important;
+    font-size: 12px !important;
     z-index: 99;
     border: #1f1f1f 1px solid;
 }
@@ -60,8 +65,8 @@
     /* border: #1f1f1f 1px solid; */
 }
 
-.zero {
-    color: rgb(79, 79, 79) !important;
+.zero{
+    color: #494949;
 }
 
 .chart-container {
@@ -80,14 +85,36 @@
     overflow: scroll;
 }
 
-/* .neuron {
-
-} */
-
 .path {
     z-index: -1;
 }
 
 .neuron {
     z-index: 99 !important;
+}
+
+.prediction-container {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter:blur(5px);
+    position: fixed;
+    top: 5vh;
+    right: 5vh;
+    color: aliceblue;
+    border-radius: 12px;
+    border: #494949 1px solid;
+    padding: 10px;
+}
+
+.prediction-title{
+    background-color: rgba(0, 0, 0, 0);
+    text-align: right;
+    font-weight: bold;
+}
+
+.prediction-container div{
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.prediction-container svg{
+    background-color: rgba(0, 0, 0, 0);
 }

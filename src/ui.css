@@ -1,5 +1,6 @@
 * {
     background-color: rgb(0, 0, 0);
+    color: white;
     /* overflow: scroll; */
 }
 
@@ -79,7 +80,7 @@
 }
 
 .add-button {
-    font-size: 6px;
+    font-size: 12px;
     border: 0px;
     padding: 0px;
     /* margin-top: 0.1rem; */
@@ -89,7 +90,7 @@
 }
 
 .add-button:hover {
-    font-size: 6px;
+    font-size: 12px;
     border: 0px;
     padding: 0.7rem;
     /* margin-top: 0.7rem; */
@@ -120,14 +121,20 @@
 
 .change-button{
     display: inline-block;
-    border: #494949 1px solid;
+    border: #494949 2px solid;
     border-radius: 12px;
     background-color: #000000;
     text-align: left;
-    padding: 5%;
-    margin-bottom: 0.7rem;
+    padding: 16px;
+    /* margin-bottom: 0.7rem; */
     transition: 300ms;
     position: fixed;
-    bottom: 0;
-    right: 0;
+    bottom: 2vh;
+    right: 5vh;
+}
+
+.change-button:hover{
+    transition: 300ms;
+    cursor: pointer;
+    background-color: #c1c1c1;
 }

@@ -13,6 +13,7 @@ import './chart.css';
 import './ui.css';
 
 import Chart from './chart/chart.js'
+import Prediction from './chart/prediction.js'
 
 import ControlBar from './UI/ControlBar.js'
 import ChangeImage from './UI/ChangeImage.js'
@@ -22,7 +23,6 @@ import { createModel } from './methods/create_model.js'
 import { loadModelData } from "./methods/load_model_data.js"
 import { showAccuracy, showConfusion, train } from './methods/train_model.js';
 import { showExamples, getImageTensor } from './methods/show_image_data.js'
-import { test } from './methods/smallTest.js'
 
 function App() {
 
@@ -159,6 +159,14 @@ function App() {
           epoch={epoch}
         />
       )}
+      {modelInfo && (
+        <Prediction
+        modelInfo={modelInfo}
+        epoch={epoch}
+        isChangeImage = {isChangeImage}
+      />
+      )}
+      
       <ControlBar
         modelConfig={modelConfig}
         setModelConfig={setModelConfig}
