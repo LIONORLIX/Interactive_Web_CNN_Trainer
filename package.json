@@ -1,7 +1,7 @@
 {
   "name": "cnn_vis",
   "version": "0.1.0",
-  "homepage": "https://git.arts.ac.uk/pages/23009641/Interactive_web_CNN_using_MNIST/",
+  "homepage": "https://git.arts.ac.uk/pages/23009641/Interactive_web_CNN_using_MNIST",
   "private": true,
   "dependencies": {
     "@tensorflow/tfjs": "^4.17.0",
