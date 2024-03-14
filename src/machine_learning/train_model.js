@@ -1,4 +1,4 @@
-// Source from: https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#5
+// Code based on: https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#5
 //
 // Modified by: Xiang Li
 // UAL Student ID: 23009641

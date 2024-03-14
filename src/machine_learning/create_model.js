@@ -1,14 +1,22 @@
-// // https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#4
-import * as tf from '@tensorflow/tfjs';
-// import * as tfvis from '@tensorflow/tfjs-vis'
+// Code based on: https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#4
+//
+// Modified by: Xiang Li
+// UAL Student ID: 23009641
+//
+// Create a TensorFlow.js model based on configuration info set by user
 
-export function createModel(modelConfig) {
+import * as tf from '@tensorflow/tfjs';
+
+export function createModel(modelConfig) { // I add a parameter to pass an array and this function can generate a model based on this array
+
   const model = tf.sequential();
 
+  // set up input size
   const IMAGE_WIDTH = 28;
   const IMAGE_HEIGHT = 28;
   const IMAGE_CHANNELS = 1;
 
+  // loop to get info from array and configure each Conv2D layer
   for (let i=0; i<modelConfig.length;i++){
     if (modelConfig[i].layerType == 'Conv2D'){
       if (i==0){
@@ -30,15 +38,17 @@ export function createModel(modelConfig) {
         }));
       }
 
-      if (modelConfig[i].isMaxPooling){
+      if (modelConfig[i].isMaxPooling){ // add a pooling layer if user turned on MaxPooling
         model.add(tf.layers.maxPooling2d({ 
           poolSize: modelConfig[i].poolSize, 
           strides: modelConfig[i].strides 
         }));
       }
+
     }
   }
 
+  // add flatten layer
   model.add(tf.layers.flatten());
 
   // output class (i.e. 0, 1, 2, 3, 4, 5, 6, 7, 8, 9).

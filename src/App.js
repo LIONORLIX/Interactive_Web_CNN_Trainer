@@ -143,10 +143,12 @@ function App() {
   useEffect(() => {
 
     (async () => {
-      if (data && inputData) {
+      if (data && inputData) { // when MNIST data imported and sample picked
         console.log("APP part2 start rendering.");
 
-        if (model) {
+        if (model) { // when model updated
+
+          // get model info for visualization
           const newModelInfo = await loadModelData(model, inputData);
           setModelInfo(newModelInfo);
           console.log(modelConfig)

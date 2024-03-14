@@ -1,4 +1,4 @@
-// Source from: https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#2
+// Based on: https://codelabs.developers.google.com/codelabs/tfjs-training-classfication?hl=en#2
 //
 // Modified by: Xiang Li
 // UAL Student ID: 23009641
@@ -18,7 +18,7 @@ export async function getImageTensor(data) {
       .slice([0, 0], [1, examples.xs.shape[1]])
       .reshape([28, 28, 1]);
   });
-  
+
   return imageTensor;
   
 }
