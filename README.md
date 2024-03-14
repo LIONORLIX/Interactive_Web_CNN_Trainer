@@ -41,7 +41,7 @@ To run this project locally, clone or download the code of the branch `main`. Be
 
    Then you can open your browser and view it at localhost. Here is a screenshot: 
 
-![Screenshot 2024-03-14 at 04.38.25](README/Screenshot 2024-03-14 at 04.38.25.png)
+![Screenshot 2024-03-14 at 04.38.25](README/Screenshot.png)
 
 
 
