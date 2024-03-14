@@ -4,9 +4,7 @@ Author: Xiang Li
 
 Student ID: 23009641
 
-This is the CCI_AI_For_Media_23_24 mini-project "Interactive_web_CNN_using_MNIST". 
-
-The idea of this project is to build an interactive system on the web that visualizes the process of building, training, and evaluating a convolutional neural network (CNN) model. **Here is the link to the code repository:**
+This is the CCI_AI_For_Media_23_24 mini-project "Interactive_web_CNN_using_MNIST". The idea of this project is to build an interactive system on the web that visualizes the process of building, training, and evaluating a convolutional neural network (CNN) model. **Here is the link to the code repository:**
 
 **https://git.arts.ac.uk/23009641/Interactive_web_CNN_using_MNIST**
 
@@ -18,34 +16,20 @@ This project has been deployed on UAL Git. **Here is the link to experience this
 https://git.arts.ac.uk/pages/23009641/Interactive_web_CNN_using_MNIST/
 (Since it requires GPU, I highly recommend you experience it on a desktop device with Chrome.)
 
-You can also view the demo video on YouTube:
+You can also view the demo video on YouTube: 
 https://youtu.be/YgYHFQpmkv4
 
 To run this project locally, clone or download the code of the branch **"main"**. Before running the code, make sure you have installed [Node and npm](https://nodejs.org/en/download/). Then open Terminal and follow the instructions below.
 
-1. Get into the project directory:
+1. Get into the project directory by command: `cd {your-path-to-project-directory}`
 
-   ```shell
-   cd {your-path-to-project-directory}
-   ```
+2. For the first time to run, relevant node modules are required to be installed. Use command: `npm install`
 
-2. For the first time to run this project, relevant node modules are required to be installed:
-
-   ```
-   npm install
-   ```
-
-3. After successfully installing node modules, run the app:
-
-   ```
-   npm start
-   ```
+3. After successfully installing node modules, run the app by command: `npm start`
 
    Then you can open your browser and view it at localhost. Here is a screenshot: 
 
-![Screenshot 2024-03-14 at 04.38.25](README/Screenshot.png)
-
-
+<img src="README/Screenshot.png" alt="Screenshot 2024-03-14 at 04.38.25" style="zoom:100%;" />
 
 ## Code structure
 
