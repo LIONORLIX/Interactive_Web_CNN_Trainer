@@ -88,7 +88,9 @@ function ControlBar(props) {
             } else { // set STEP1 UI (update log of each epoch)
 
                 let newLogList = [];
-                let tempTrainingLog = props.trainingLogs.slice().reverse() // get the log and reverse it so that user can always see the newest log on the top
+                let tempTrainingLog =[]
+                tempTrainingLog = props.trainingLogs 
+                tempTrainingLog.reverse() // get the log and reverse it so that user can always see the newest log on the top
 
                 tempTrainingLog.forEach((log, index) => {
                     newLogList.push(
