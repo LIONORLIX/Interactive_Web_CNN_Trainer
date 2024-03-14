@@ -1,18 +1,17 @@
+/* 
+ * Author: Xiang Li
+ * UAL Student ID: 23009641
+ * This is custom css for visualization part
+ */
+
 .d3-tip {
-    /* position: absolute!important;
-    right: 0!important;
-    top: 0!important; */
     background-color: rgba(0, 0, 0, 0);
+    pointer-events: none;
 }
 
 .tip {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter:blur(10px);
-    /* background-color: #878787; */
-    /* position: absolute;
-    right: 0;
-    top: 0; */
-    /* width: 30%; */
     font-size: 12px;
     border-radius: 12px;
     color: rgb(255, 255, 255);
@@ -39,11 +38,7 @@
 
 .tip-windows {
     background-color: rgba(0, 0, 0, 0);
-    /* background-color: #878787; */
-    /* position: absolute;
-    right: 0;
-    top: 0; */
-    /* width: 30%; */
+    text-align: center;
     font-size: 12px !important;
     z-index: 99;
     border: #1f1f1f 1px solid;
@@ -62,7 +57,16 @@
     height: 15px;
     color: white;
     text-align: center;
-    /* border: #1f1f1f 1px solid; */
+}
+
+.kernel-row{
+    height: 32px;
+    transform: translate(0,25%);
+}
+
+.kernel-pixel{
+    width: 32px !important;
+    height: 32px !important;
 }
 
 .zero{
@@ -98,21 +102,16 @@
 }
 
 #chart {
-    /* position: relative; */
-    /* width: 100%;
-    height: 100%; */
     left: 20%;
     overflow: scroll;
 }
 
 .path {
     z-index: -1;
-
 }
 
 .path:hover {
     stroke: rgb(255, 255, 255)
-
 }
 
 .neuron {
@@ -120,7 +119,7 @@
 }
 
 .prediction-container {
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.4);
     backdrop-filter:blur(10px);
     position: fixed;
     top: 5vh;

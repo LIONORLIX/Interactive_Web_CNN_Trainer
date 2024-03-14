@@ -22,10 +22,6 @@ export async function loadModelData(model, inputDataUnreshaped) {
     let neuronCount = -1;
 
     let sizeCnt = 28;
-    // let convCnt = 0;
-    // let poolingCnt = 0;
-    // let flattenCnt = 0;
-    // let softmaxCnt = 0;
 
     let historyLayer = [0, 0, 0, 0];
     let historySize = [];
