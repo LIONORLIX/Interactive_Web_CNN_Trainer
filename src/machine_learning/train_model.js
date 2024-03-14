@@ -58,7 +58,7 @@ export async function train(model, data, setEpoch, setIsTraining, setIsTrainingD
       setTrainingLogs(updateLogs)
       setEpoch(epoch)
       if (epoch == epochCount-1){
-        setIsTrainingDone(true); // update visulization and UI when the final epoch finished
+        setIsTrainingDone(true); // update visualization and UI when the final epoch finished
       }
     }
   };

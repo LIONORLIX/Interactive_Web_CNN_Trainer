@@ -16,7 +16,7 @@ import './App.css';
 import './custom_style/visualization.css';
 import './custom_style/user_interface.css';
 
-// import visulization Component
+// import visualization Component
 import CnnVis from './visualization/cnn_vis.js'
 import Prediction from './visualization/prediction.js'
 
@@ -139,7 +139,7 @@ function App() {
 
   }, [modelConfig, isTraining, data]);
 
-  // This part get the data of model and pass to the visulization chart
+  // This part get the data of model and pass to the visualization chart
   useEffect(() => {
 
     (async () => {
@@ -181,6 +181,13 @@ function App() {
       {!modelInfo && (
         <div className='loading-mask'>
           <div className='loading'>LOADING...</div>
+        </div>
+      )}
+
+      {/* training */}
+      {isTraining && !isTrainingDone && (
+        <div className='loading-mask'>
+          <div className='loading'>TRAINING...</div>
         </div>
       )}
       

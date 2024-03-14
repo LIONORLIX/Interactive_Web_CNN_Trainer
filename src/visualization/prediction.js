@@ -127,7 +127,7 @@ function Prediction(props) {
             <div ref={ref}>
             </div>
             {/* chart title */}
-            <div className={'prediction-title'}>PREDICTION of Hand Writing Digits</div>
+            <div className={'prediction-title'}>PREDICTION of Handwritten Digits</div>
         </div>
     )
 }
