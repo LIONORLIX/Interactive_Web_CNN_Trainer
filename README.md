@@ -14,7 +14,6 @@ The idea of this project is to build an interactive system on the web that visua
 
 This project has been deployed on UAL Git. **Here is the link to experience this project online directly**: 
 https://git.arts.ac.uk/pages/23009641/Interactive_web_CNN_using_MNIST/
-
 (Since it requires GPU, I highly recommend you experience it on a desktop device with Chrome.)
 
 You can also view the demo video on YouTube:
