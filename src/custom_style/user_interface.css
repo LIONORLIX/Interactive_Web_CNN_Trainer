@@ -16,6 +16,23 @@
     z-index: -2;
 }
 
+.loading-mask{
+  z-index: 99;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 50);
+}
+
+.loading{
+  text-align: center;
+  position: relative;
+  top: 50%;
+  background-color: rgba(0, 0, 0, 0);
+  font-weight: bold;
+  font-size: 20px;
+}
+
 .ui-container{
     text-align: left;
 }

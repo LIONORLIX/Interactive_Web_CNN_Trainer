@@ -177,7 +177,13 @@ function App() {
   // render all the interface and visualization
   return (
     <div>
-
+      {/* loading */}
+      {!modelInfo && (
+        <div className='loading-mask'>
+          <div className='loading'>LOADING...</div>
+        </div>
+      )}
+      
       {/* visualization */}
       {modelInfo && (
         <CnnVis
@@ -209,6 +215,7 @@ function App() {
         isChangeImage={isChangeImage}
         setIsChangeImage={setIsChangeImage}
       />
+
     </div>
   );
 }
