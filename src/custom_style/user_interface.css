@@ -11,6 +11,10 @@
     color: white;
 }
 
+::-webkit-scrollbar {
+  display: none;
+}
+
 .root {
     overflow: scroll;
     z-index: -2;
