@@ -74,7 +74,6 @@ function Prediction(props) {
                 .attr("width", barWidth)
                 .attr("y", 20)
                 .attr("height", function(d){
-                    console.log(d)
                     return fullBarHeight*d
                 })
 

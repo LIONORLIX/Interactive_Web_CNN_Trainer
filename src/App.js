@@ -128,7 +128,7 @@ function App() {
         if (!isTraining) { // when is not training
           let newModel = createModel(modelConfig) // create new model based on configuration
           setModel(newModel); // update new model
-        } else if (isTraining && !isTrainingDone){ // when is training
+        } else { // when is training
           // train the model
           await train(model, data, setEpoch, setIsTraining, setIsTrainingDone, setTrainingLogs, trainingLogs, epochCount);
         }

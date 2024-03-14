@@ -199,7 +199,6 @@ function CnnVis(props) {
           }
         })
         .html(function (d, neuronData) {
-          console.log(neuronData)
           if (neuronData[3]) {
             // show kernel title
             let htmlContent = "<div class='tip'>"
@@ -212,7 +211,6 @@ function CnnVis(props) {
             for (let i = 0; i < neuronData[3].length; i++) {
               htmlContent += "<div class='tip-row kernel-row'>"
               for (let j = 0; j < neuronData[3].length; j++) {
-                console.log(neuronData[3][i][j][neuronData[0]][neuronData[1]])
                 htmlContent += "<div class='tip-pixel five kernel-pixel'>"
                 htmlContent += (neuronData[3][i][j][neuronData[0]][neuronData[1]] * 1000.0).toFixed(0)
                 htmlContent += "</div>"
