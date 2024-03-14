@@ -10,6 +10,8 @@ The idea of this project is to build an interactive system on the web that visua
 
 **https://git.arts.ac.uk/23009641/Interactive_web_CNN_using_MNIST**
 
+This is a repo with two branches. To view the source code, please make sure you are at the branch **"main"**.
+
 ## How to run and view
 
 This project has been deployed on UAL Git. **Here is the link to experience this project online directly**: 
@@ -19,7 +21,7 @@ https://git.arts.ac.uk/pages/23009641/Interactive_web_CNN_using_MNIST/
 You can also view the demo video on YouTube:
 https://youtu.be/Jv0xe3rG5Dc
 
-To run this project locally, clone or download the code of the branch `main`. Before running the code, make sure you have installed [Node and npm](https://nodejs.org/en/download/). Then open Terminal and follow the instructions below.
+To run this project locally, clone or download the code of the branch **"main"**. Before running the code, make sure you have installed [Node and npm](https://nodejs.org/en/download/). Then open Terminal and follow the instructions below.
 
 1. Get into the project directory:
 
