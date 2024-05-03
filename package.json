@@ -1,6 +1,7 @@
 {
   "name": "cnn_vis",
   "version": "0.1.0",
+  "homepage": "https://lionorlix.github.io/react-gh-pages",
   "private": true,
   "dependencies": {
     "@tensorflow/tfjs": "^4.17.0",
