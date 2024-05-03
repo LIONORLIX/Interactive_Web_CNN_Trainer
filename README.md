@@ -1,14 +1,6 @@
 # Interactive_web_CNN_using_MNIST
 
-Author: Xiang Li
-
-Student ID: 23009641
-
-This is the CCI_AI_For_Media_23_24 mini-project "Interactive_web_CNN_using_MNIST". The idea of this project is to build an interactive system on the web that visualizes the process of building, training, and evaluating a convolutional neural network (CNN) model. **Here is the link to the code repository:**
-
-**https://git.arts.ac.uk/23009641/Interactive_web_CNN_using_MNIST**
-
-This is a repo with two branches. To view the source code, please make sure you are at the branch **"main"**.
+This is the CCI_AI_For_Media_23_24 mini-project "Interactive_web_CNN_using_MNIST". The idea of this project is to build an interactive system on the web that visualizes the process of building, training, and evaluating a convolutional neural network (CNN) model. 
 
 ## How to run and view
 
